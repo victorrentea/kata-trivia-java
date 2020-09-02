@@ -7,7 +7,7 @@ import java.util.List;
 // @Value
 class Player {
    private final String name;
-   private final int place = 0;
+   private int place = 0;
 
    Player(String name) {
       this.name = name;
@@ -16,11 +16,21 @@ class Player {
    public String name() {
       return name;
    }
+
+   public int place() {
+      return place;
+   }
+
+   public void move(int roll) {
+      place += roll;
+      if (place >= 12) {
+         place -= 12;
+      }
+   }
 }
 
 public class Game implements IGame {
    private List<Player> players = new ArrayList<>();
-   int[] places = new int[6];
    int[] purses = new int[6];
    boolean[] inPenaltyBox = new boolean[6];
 
@@ -47,7 +57,6 @@ public class Game implements IGame {
 
    public boolean add(String playerName) {
       players.add(new Player(playerName));
-      places[players.size()] = 0; // places[1]
       purses[howManyPlayers()] = 0;
       inPenaltyBox[howManyPlayers()] = false;
 
@@ -61,39 +70,39 @@ public class Game implements IGame {
    }
 
    public void roll(int roll) {
-      System.out.println(players.get(currentPlayer).name() + " is the current player");
+      System.out.println(currentPlayer().name() + " is the current player");
       System.out.println("They have rolled a " + roll);
 
       if (inPenaltyBox[currentPlayer]) {
          if (roll % 2 != 0) {
             isGettingOutOfPenaltyBox = true;
 
-            System.out.println(players.get(currentPlayer).name() + " is getting out of the penalty box");
-            places[currentPlayer] = places[currentPlayer] + roll;
-            if (places[currentPlayer] > 11) places[currentPlayer] = places[currentPlayer] - 12;
+            System.out.println(currentPlayer().name() + " is getting out of the penalty box");
+            movePlayer(roll);
 
-            System.out.println(players.get(currentPlayer).name()
+            System.out.println(currentPlayer().name()
                                + "'s new location is "
-                               + places[currentPlayer]);
+                               + currentPlayer().place());
             System.out.println("The category is " + currentCategory());
             askQuestion();
          } else {
-            System.out.println(players.get(currentPlayer).name() + " is not getting out of the penalty box");
+            System.out.println(currentPlayer().name() + " is not getting out of the penalty box");
             isGettingOutOfPenaltyBox = false;
          }
 
       } else {
-
-         places[currentPlayer] = places[currentPlayer] + roll;
-         if (places[currentPlayer] > 11) places[currentPlayer] = places[currentPlayer] - 12;
-
-         System.out.println(players.get(currentPlayer).name()
+         movePlayer(roll);
+         System.out.println(currentPlayer().name()
                             + "'s new location is "
-                            + places[currentPlayer]);
+                            + currentPlayer().place());
          System.out.println("The category is " + currentCategory());
          askQuestion();
       }
 
+   }
+
+   private void movePlayer(int roll) {
+      currentPlayer().move(roll);
    }
 
    private void askQuestion() {
@@ -112,16 +121,20 @@ public class Game implements IGame {
 
 
    private String currentCategory() {
-      if (places[currentPlayer] == 0) return "Pop";
-      if (places[currentPlayer] == 4) return "Pop";
-      if (places[currentPlayer] == 8) return "Pop";
-      if (places[currentPlayer] == 1) return "Science";
-      if (places[currentPlayer] == 5) return "Science";
-      if (places[currentPlayer] == 9) return "Science";
-      if (places[currentPlayer] == 2) return "Sports";
-      if (places[currentPlayer] == 6) return "Sports";
-      if (places[currentPlayer] == 10) return "Sports";
+      if (currentPlayer().place() == 0) return "Pop";
+      if (currentPlayer().place() == 4) return "Pop";
+      if (currentPlayer().place() == 8) return "Pop";
+      if (currentPlayer().place() == 1) return "Science";
+      if (currentPlayer().place() == 5) return "Science";
+      if (currentPlayer().place() == 9) return "Science";
+      if (currentPlayer().place() == 2) return "Sports";
+      if (currentPlayer().place() == 6) return "Sports";
+      if (currentPlayer().place() == 10) return "Sports";
       return "Rock";
+   }
+
+   private Player currentPlayer() {
+      return players.get(currentPlayer);
    }
 
    public boolean wasCorrectlyAnswered() {
@@ -129,7 +142,7 @@ public class Game implements IGame {
          if (isGettingOutOfPenaltyBox) {
             System.out.println("Answer was correct!!!!");
             purses[currentPlayer]++;
-            System.out.println(players.get(currentPlayer).name()
+            System.out.println(currentPlayer().name()
                                + " now has "
                                + purses[currentPlayer]
                                + " Gold Coins.");
@@ -150,7 +163,7 @@ public class Game implements IGame {
 
          System.out.println("Answer was corrent!!!!");
          purses[currentPlayer]++;
-         System.out.println(players.get(currentPlayer).name()
+         System.out.println(currentPlayer().name()
                             + " now has "
                             + purses[currentPlayer]
                             + " Gold Coins.");
@@ -165,7 +178,7 @@ public class Game implements IGame {
 
    public boolean wrongAnswer() {
       System.out.println("Question was incorrectly answered");
-      System.out.println(players.get(currentPlayer).name() + " was sent to the penalty box");
+      System.out.println(currentPlayer().name() + " was sent to the penalty box");
       inPenaltyBox[currentPlayer] = true;
 
       currentPlayer++;
@@ -178,3 +191,16 @@ public class Game implements IGame {
       return !(purses[currentPlayer] == 6);
    }
 }
+
+
+/**
+ * extract method (replace duplicate code)
+ * Inline
+ * renamed
+ * baby steps: don't break compilation at any moment while refactoring
+ * Move Method ---> Player.move(roll) -- with invariants
+ * switch [expression]: 1) one lines/case, 2) default 3) no extra code in that method
+ * Alt-J
+ * Any field you create let it be private final at the start. NOT creating gettters and setters. If you have to create them, create them individually
+ * records Java 16+ - immutable structs
+ */
