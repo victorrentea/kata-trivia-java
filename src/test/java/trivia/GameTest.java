@@ -11,7 +11,6 @@ import org.junit.Test;
 
 public class GameTest {
 
-
 	@Test
 	public void caracterizationTest() {
 		for (int seed = 1; seed < 10_000; seed++) {
