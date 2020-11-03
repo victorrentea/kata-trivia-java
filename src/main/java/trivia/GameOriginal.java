@@ -3,7 +3,7 @@ package trivia;
 import java.util.ArrayList;
 import java.util.LinkedList;
 
-public class GameBetter implements IGame {
+public class GameOriginal implements IGame {
    ArrayList players = new ArrayList();
    int[] places = new int[6];
    int[] purses = new int[6];
@@ -17,7 +17,7 @@ public class GameBetter implements IGame {
    int currentPlayer = 0;
    boolean isGettingOutOfPenaltyBox;
 
-   public GameBetter() {
+   public GameOriginal() {
       for (int i = 0; i < 50; i++) {
          popQuestions.addLast("Pop Question " + i);
          scienceQuestions.addLast(("Science Question " + i));
