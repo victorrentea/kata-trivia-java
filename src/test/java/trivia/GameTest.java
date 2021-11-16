@@ -1,21 +1,23 @@
 
 package trivia;
-import static org.junit.Assert.assertEquals;
+
+import org.junit.Test;
 
 import java.io.ByteArrayOutputStream;
 import java.io.PrintStream;
 import java.util.Random;
 
-import org.junit.Test;
+import static org.junit.Assert.assertEquals;
 
 
 public class GameTest {
+
 
 	@Test
 	public void caracterizationTest() {
 		for (int seed = 1; seed < 10_000; seed++) {
 			String expectedOutput = extractOutput(new Random(seed), new Game());
-			String actualOutput = extractOutput(new Random(seed), new GameOriginal());
+			String actualOutput = extractOutput(new Random(seed), new GameBetter());
 			assertEquals(expectedOutput, actualOutput);
 		}
 	}

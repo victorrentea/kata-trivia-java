@@ -1,116 +1,170 @@
 package trivia;
 
 import java.util.ArrayList;
-import java.util.List;
+import java.util.LinkedList;
 
+
+// TODO refactor me
 public class Game implements IGame {
-   private final List<Player> players = new ArrayList<>();
-   private final Questions questions= new Questions();
+   ArrayList players = new ArrayList();
+   int[] places = new int[6];
+   int[] purses = new int[6];
+   boolean[] inPenaltyBox = new boolean[6];
 
-   private int currentPlayer = 0;
-   private boolean isGettingOutOfPenaltyBox;
+   LinkedList popQuestions = new LinkedList();
+   LinkedList scienceQuestions = new LinkedList();
+   LinkedList sportsQuestions = new LinkedList();
+   LinkedList rockQuestions = new LinkedList();
+
+   int currentPlayer = 0;
+   boolean isGettingOutOfPenaltyBox;
+
+   public Game() {
+      for (int i = 0; i < 50; i++) {
+         popQuestions.addLast("Pop Question " + i);
+         scienceQuestions.addLast(("Science Question " + i));
+         sportsQuestions.addLast(("Sports Question " + i));
+         rockQuestions.addLast(createRockQuestion(i));
+      }
+   }
+
+   public String createRockQuestion(int index) {
+      return "Rock Question " + index;
+   }
+
+   public boolean isPlayable() {
+      return (howManyPlayers() >= 2);
+   }
+
+   public boolean add(String playerName) {
 
 
-   public void add(String playerName) {
-      players.add(new Player(playerName));
+      players.add(playerName);
+      places[howManyPlayers()] = 0;
+      purses[howManyPlayers()] = 0;
+      inPenaltyBox[howManyPlayers()] = false;
+
       System.out.println(playerName + " was added");
       System.out.println("They are player number " + players.size());
+      return true;
+   }
+
+   public int howManyPlayers() {
+      return players.size();
    }
 
    public void roll(int roll) {
-      System.out.println(currentPlayer().name() + " is the current player");
+      System.out.println(players.get(currentPlayer) + " is the current player");
       System.out.println("They have rolled a " + roll);
 
-
-      // TODO nested ifs.
-      if (currentPlayer().isInPenaltyBox()) {
+      if (inPenaltyBox[currentPlayer]) {
          if (roll % 2 != 0) {
             isGettingOutOfPenaltyBox = true;
 
-            System.out.println(currentPlayer().name() + " is getting out of the penalty box");
-            currentPlayer().move(roll);
+            System.out.println(players.get(currentPlayer) + " is getting out of the penalty box");
+            places[currentPlayer] = places[currentPlayer] + roll;
+            if (places[currentPlayer] > 11) places[currentPlayer] = places[currentPlayer] - 12;
 
-            System.out.println(currentPlayer().name()+ "'s new location is " + currentPlayer().place());
-            System.out.println("The category is " + questions.currentCategory(currentPlayer().place()).getLabel());
+            System.out.println(players.get(currentPlayer)
+                               + "'s new location is "
+                               + places[currentPlayer]);
+            System.out.println("The category is " + currentCategory());
             askQuestion();
          } else {
-            System.out.println(currentPlayer().name() + " is not getting out of the penalty box");
-            isGettingOutOfPenaltyBox = false; // TODO Do we get an answer from the biz about penalty box ?
+            System.out.println(players.get(currentPlayer) + " is not getting out of the penalty box");
+            isGettingOutOfPenaltyBox = false;
          }
+
       } else {
-         currentPlayer().move(roll);
-         System.out.println(currentPlayer().name() + "'s new location is " + currentPlayer().place());
-         System.out.println("The category is " + questions.currentCategory(currentPlayer().place()).getLabel());
+
+         places[currentPlayer] = places[currentPlayer] + roll;
+         if (places[currentPlayer] > 11) places[currentPlayer] = places[currentPlayer] - 12;
+
+         System.out.println(players.get(currentPlayer)
+                            + "'s new location is "
+                            + places[currentPlayer]);
+         System.out.println("The category is " + currentCategory());
          askQuestion();
       }
+
    }
 
    private void askQuestion() {
-      System.out.println(questions.extractNextQuestion(currentPlayer().place()));
+      if (currentCategory() == "Pop")
+         System.out.println(popQuestions.removeFirst());
+      if (currentCategory() == "Science")
+         System.out.println(scienceQuestions.removeFirst());
+      if (currentCategory() == "Sports")
+         System.out.println(sportsQuestions.removeFirst());
+      if (currentCategory() == "Rock")
+         System.out.println(rockQuestions.removeFirst());
    }
 
-   private Player currentPlayer() {
-      return players.get(currentPlayer);
+
+   private String currentCategory() {
+      if (places[currentPlayer] == 0) return "Pop";
+      if (places[currentPlayer] == 4) return "Pop";
+      if (places[currentPlayer] == 8) return "Pop";
+      if (places[currentPlayer] == 1) return "Science";
+      if (places[currentPlayer] == 5) return "Science";
+      if (places[currentPlayer] == 9) return "Science";
+      if (places[currentPlayer] == 2) return "Sports";
+      if (places[currentPlayer] == 6) return "Sports";
+      if (places[currentPlayer] == 10) return "Sports";
+      return "Rock";
    }
 
    public boolean wasCorrectlyAnswered() {
-      boolean result = aaa();
-
-      moveToNextPlayer();
-      return result;
-   }
-
-   // TODO name this
-   private boolean aaa() {
-      // TODO 3 ifs
-      if (currentPlayer().isInPenaltyBox()) {
+      if (inPenaltyBox[currentPlayer]) {
          if (isGettingOutOfPenaltyBox) {
             System.out.println("Answer was correct!!!!");
-            // TODO posisble bug: shouldn't you exit the penalty box here ? // email the biz: in case he's about to exit from pen box and correct answer
-            currentPlayer().addCoin();
-            System.out.println(currentPlayer().name() + " now has " + currentPlayer().coins() + " Gold Coins.");
-            return currentPlayer().didPlayerWin();
+            purses[currentPlayer]++;
+            System.out.println(players.get(currentPlayer)
+                               + " now has "
+                               + purses[currentPlayer]
+                               + " Gold Coins.");
+
+            boolean winner = didPlayerWin();
+            currentPlayer++;
+            if (currentPlayer == players.size()) currentPlayer = 0;
+
+            return winner;
          } else {
+            currentPlayer++;
+            if (currentPlayer == players.size()) currentPlayer = 0;
             return true;
          }
-      } else {
-         System.out.println("Answer was corrent!!!!");
-         currentPlayer().addCoin();
-         System.out.println(currentPlayer().name() + " now has "+ currentPlayer().coins() + " Gold Coins.");
-         return currentPlayer().didPlayerWin();
-      }
-   }
 
-   private void moveToNextPlayer() {
-      currentPlayer++;
-      if (currentPlayer == players.size()) currentPlayer = 0;
+
+      } else {
+
+         System.out.println("Answer was corrent!!!!");
+         purses[currentPlayer]++;
+         System.out.println(players.get(currentPlayer)
+                            + " now has "
+                            + purses[currentPlayer]
+                            + " Gold Coins.");
+
+         boolean winner = didPlayerWin();
+         currentPlayer++;
+         if (currentPlayer == players.size()) currentPlayer = 0;
+
+         return winner;
+      }
    }
 
    public boolean wrongAnswer() {
       System.out.println("Question was incorrectly answered");
-      System.out.println(currentPlayer().name() + " was sent to the penalty box");
-      currentPlayer().moveToPenaltyBox();
+      System.out.println(players.get(currentPlayer) + " was sent to the penalty box");
+      inPenaltyBox[currentPlayer] = true;
 
-      moveToNextPlayer();
+      currentPlayer++;
+      if (currentPlayer == players.size()) currentPlayer = 0;
       return true;
    }
 
 
+   private boolean didPlayerWin() {
+      return !(purses[currentPlayer] == 6);
+   }
 }
-
-
-/**
- * extract method (replace duplicate code)
- * Inline
- * renamed
- * baby steps: don't break compilation at any moment while refactoring
- * Move Method ---> Player.move(roll) -- with invariants
- * switch [expression]: 1) one lines/case, 2) default 3) no extra code in that method
- * Alt-J
- * Any field you create let it be private final at the start. NOT creating gettters and setters. If you have to create them, create them individually
- * records Java 16+ - immutable structs
- *
- * Introduced parameter
- * Encapsulated the logic of questions + extracted class
- *
- */
