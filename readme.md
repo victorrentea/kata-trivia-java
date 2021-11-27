@@ -22,7 +22,7 @@ remained the same despite your refactorings.
 This is called the "Golden Master Method", and it was used to build GameTest. 
 
 ## The Task
-Your job is to refactor BetterGame.java, continuously running GameTest to make sure you don't break anything.
+Your job is to refactor GameBetter.java, continuously running GameTest to make sure you don't break anything.
 
 **Do not touch Game.java** unless to fix a bug.
 
