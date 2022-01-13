@@ -1,7 +1,6 @@
 package trivia;
 
 import java.util.ArrayList;
-import java.util.LinkedList;
 import java.util.List;
 
 // REFACTOR ME
@@ -24,21 +23,11 @@ public class GameBetter implements IGame {
          popQuestions.add("Pop Question " + i);
          scienceQuestions.add(("Science Question " + i));
          sportsQuestions.add(("Sports Question " + i));
-         rockQuestions.add(createRockQuestion(i));
+         rockQuestions.add("Rock Question " + i);
       }
    }
 
-   public String createRockQuestion(int index) {
-      return "Rock Question " + index;
-   }
-
-   public boolean isPlayable() {
-      return (howManyPlayers() >= 2);
-   }
-
-   public boolean add(String playerName) {
-
-
+   public void add(String playerName) {
       players.add(playerName);
       places[howManyPlayers()] = 0;
       purses[howManyPlayers()] = 0;
@@ -46,7 +35,6 @@ public class GameBetter implements IGame {
 
       System.out.println(playerName + " was added");
       System.out.println("They are player number " + players.size());
-      return true;
    }
 
    public int howManyPlayers() {
