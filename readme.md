@@ -1,6 +1,6 @@
 # Trivia Refactoring Kata
 Arranged by Victor Rentea
-Mobbed by Ralf Klemmer, ...
+Mobbed by Ralf Klemmer, Jov Mit, ...
 ## The problem
 Here is a preview of a game in action.
 ![Trivia Game Picture](art/trivia.jpg)
