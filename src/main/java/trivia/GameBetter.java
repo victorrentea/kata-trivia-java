@@ -41,8 +41,6 @@ public class GameBetter implements IGame {
       return players.size();
    }
 
-   private static final int PLACE_11 = 11;
-
    public void roll(int roll) {
       System.out.println(players.get(currentPlayer) + " is the current player");
       System.out.println("They have rolled a " + roll);
@@ -52,9 +50,8 @@ public class GameBetter implements IGame {
             isGettingOutOfPenaltyBox = true;
 
             System.out.println(players.get(currentPlayer) + " is getting out of the penalty box");
-            places[currentPlayer] = places[currentPlayer] + roll;
 
-            if (places[currentPlayer] > PLACE_11) places[currentPlayer] = places[currentPlayer] - 12;
+            fff(roll);
 
             System.out.println(players.get(currentPlayer)
                                + "'s new location is "
@@ -65,11 +62,9 @@ public class GameBetter implements IGame {
             System.out.println(players.get(currentPlayer) + " is not getting out of the penalty box");
             isGettingOutOfPenaltyBox = false;
          }
-
       } else {
 
-         places[currentPlayer] = places[currentPlayer] + roll;
-         if (places[currentPlayer] > PLACE_11) places[currentPlayer] = places[currentPlayer] - 12;
+         fff(roll);
 
          System.out.println(players.get(currentPlayer)
                             + "'s new location is "
@@ -80,14 +75,21 @@ public class GameBetter implements IGame {
 
    }
 
+   private void fff(int roll) {
+      places[currentPlayer] = places[currentPlayer] + roll;
+      if (places[currentPlayer] > 11) {
+         places[currentPlayer] = places[currentPlayer] - 12;
+      }
+   }
+
    private void askQuestion() {
-      if (currentCategory() == "Pop")
+      if (currentCategory().equals("Pop"))
          System.out.println(popQuestions.remove(0));
-      if (currentCategory() == "Science")
+      if (currentCategory().equals("Science"))
          System.out.println(scienceQuestions.remove(0));
-      if (currentCategory() == "Sports")
+      if (currentCategory().equals("Sports"))
          System.out.println(sportsQuestions.remove(0));
-      if (currentCategory() == "Rock")
+      if (currentCategory().equals("Rock"))
          System.out.println(rockQuestions.remove(0));
    }
 
