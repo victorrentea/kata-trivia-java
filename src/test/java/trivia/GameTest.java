@@ -1,34 +1,45 @@
 
 package trivia;
 
-import org.junit.Test;
+import org.apache.commons.io.IOUtils;
+import org.junit.jupiter.api.Test;
+import trivia.tools.CaptureSystemOutput;
+import trivia.tools.CaptureSystemOutput.OutputCapture;
 
-import java.io.ByteArrayOutputStream;
-import java.io.PrintStream;
+import java.io.IOException;
+import java.io.InputStream;
+import java.nio.charset.StandardCharsets;
 import java.util.Random;
 
-import static org.junit.Assert.assertEquals;
-
+import static org.junit.jupiter.api.Assertions.assertEquals;
 
 public class GameTest {
 
-
 	@Test
-	public void caracterizationTest() {
-		for (int seed = 1; seed < 10_000; seed++) {
-			String expectedOutput = extractOutput(new Random(seed), new Game());
-			String actualOutput = extractOutput(new Random(seed), new GameBetter());
-			System.out.println("----------------\n"+expectedOutput);
-			assertEquals(expectedOutput, actualOutput);
+	@CaptureSystemOutput
+	public void caracterizationTest(OutputCapture outputCapture) throws IOException {
+
+		for (int seed = 1; seed <= 2; seed++) {
+			Random pseudoRandomSequence = new Random(seed);
+			runGame(pseudoRandomSequence, new Game());
+
+			String actualOutput = outputCapture.toString();
+			String fileName = "/tests/run-" + seed + ".txt";
+			try (InputStream expectedStream = GameTest.class.getResourceAsStream(fileName)) {
+				if (expectedStream == null) {
+					throw new IllegalArgumentException("Expected output file not found: " + fileName);
+				}
+				String expectedOutput = IOUtils.toString(expectedStream, StandardCharsets.UTF_8);
+				assertEquals(expectedOutput, actualOutput, "File: " + fileName);
+			}
 		}
 	}
 
-	private String extractOutput(Random rand, IGame aGame) {
-		ByteArrayOutputStream baos = new ByteArrayOutputStream();
-		try (PrintStream inmemory = new PrintStream(baos)) {
-			System.setOut(inmemory);
-			
-			
+	private String runGame(Random rand, Game aGame) {
+//		ByteArrayOutputStream baos = new ByteArrayOutputStream();
+//		try (PrintStream inmemory = new PrintStream(baos)) {
+//			System.setOut(inmemory);
+
 			aGame.add("Chet");
 			aGame.add("Pat");
 			aGame.add("Sue");
@@ -44,8 +55,9 @@ public class GameTest {
 				}
 				
 			} while (notAWinner);
-		}
-		String output = new String(baos.toByteArray());
-		return output;
+//		}
+//		String output = new String(baos.toByteArray());
+//		return output;
+		return "";
 	}
 }
