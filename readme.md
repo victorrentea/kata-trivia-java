@@ -41,17 +41,18 @@ Do you best until you're *proud* of this code!
 - Try to use as much quickfix as possible: Alt-Enter/⌥Enter (IntelliJ) or Ctrl-1 (Eclipse) 
 - Use as much automatic IDE refactoring as possible
 - Work in small steps, continuously running tests
-- Commit frequently such that you made a mistake or took a wrong turn, you can revert to safety. There's a local .git repo right here so you can directly commit your changes (no remote counterpart). 
+- Commit frequently such that you made a mistake or took a wrong turn, you can revert to safety. 
+- Never be afraid to Revert and explore another design idea
 
 ***
-After you're DONE, zip your work and send it to Victor.
+After you're DONE, zip your work and send it to Victor for review.
 ***
 
-Then, if you want even more than that...
+Afterwards, if you want even more...
 
 ## Follow-up [optional]
 
-If you're proud of the form your brought the code to, the the following:
+If you're proud of the form your brought the code to, try the following:
 
 ### Implement a Change Request
 Try to implement some of the following further **change requests**:
