@@ -35,7 +35,7 @@ Warnings:
 
 Do you best until you're *proud* of this code!
 
-Time: 1-3 hours
+**Expected Working Time**: 1-3 hours. _(more, but better if Pair Programming)_
 
 ## Technique
 - Try to use as much quickfix as possible: Alt-Enter/⌥Enter (IntelliJ) or Ctrl-1 (Eclipse) 
