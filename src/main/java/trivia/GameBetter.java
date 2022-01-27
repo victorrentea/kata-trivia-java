@@ -10,19 +10,19 @@ public class GameBetter implements IGame {
    private final int[] places = new int[6];
    private final int[] purses = new int[6];
    private final boolean[] inPenaltyBox = new boolean[6];
-   private final LinkedList<String> popQuestions = new LinkedList<>();
-   private final LinkedList<String> scienceQuestions = new LinkedList<>();
-   private final LinkedList<String> sportsQuestions = new LinkedList<>();
-   private final LinkedList<String> rockQuestions = new LinkedList<>();
+   private final List<String> popQuestions = new LinkedList<>();
+   private final List<String> scienceQuestions = new LinkedList<>();
+   private final List<String> sportsQuestions = new LinkedList<>();
+   private final List<String> rockQuestions = new LinkedList<>();
    private int currentPlayer = 0;
    private boolean isGettingOutOfPenaltyBox;
 
    public GameBetter() {
       for (int i = 0; i < 50; i++) {
-         popQuestions.addLast("Pop Question " + i);
-         scienceQuestions.addLast("Science Question " + i);
-         sportsQuestions.addLast("Sports Question " + i);
-         rockQuestions.addLast("Rock Question " + i);
+         popQuestions.add("Pop Question " + i);
+         scienceQuestions.add("Science Question " + i);
+         sportsQuestions.add("Sports Question " + i);
+         rockQuestions.add("Rock Question " + i);
       }
    }
 
@@ -60,28 +60,28 @@ public class GameBetter implements IGame {
             System.out.println(players.get(currentPlayer) + " is not getting out of the penalty box");
             isGettingOutOfPenaltyBox = false;
          }
-
       } else {
-
          places[currentPlayer] = places[currentPlayer] + roll;
          if (places[currentPlayer] > 11) places[currentPlayer] = places[currentPlayer] - 12;
-
          System.out.println(players.get(currentPlayer) + "'s new location is " + places[currentPlayer]);
          System.out.println("The category is " + currentCategory());
          askQuestion();
       }
-
    }
 
    private void askQuestion() {
-      if (currentCategory().equals("Pop"))
-         System.out.println(popQuestions.removeFirst());
-      if (currentCategory().equals("Science"))
-         System.out.println(scienceQuestions.removeFirst());
-      if (currentCategory().equals("Sports"))
-         System.out.println(sportsQuestions.removeFirst());
-      if (currentCategory().equals("Rock"))
-         System.out.println(rockQuestions.removeFirst());
+      if (currentCategory().equals("Pop")) {
+         System.out.println(popQuestions.remove(0));
+      }
+      if (currentCategory().equals("Science")) {
+         System.out.println(scienceQuestions.remove(0));
+      }
+      if (currentCategory().equals("Sports")) {
+         System.out.println(sportsQuestions.remove(0));
+      }
+      if (currentCategory().equals("Rock")) {
+         System.out.println(rockQuestions.remove(0));
+      }
    }
 
    private String currentCategory() {
