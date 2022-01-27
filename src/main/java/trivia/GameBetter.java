@@ -6,6 +6,8 @@ import java.util.List;
 
 // REFACTOR ME
 public class GameBetter implements IGame {
+   public static final int NUMBER_OF_CARDS = 50;
+   public static final int NUMBER_OF_CELLS = 12;
    private final List<String> players = new ArrayList<>();
    private final int[] places = new int[6];
    private final int[] purses = new int[6];
@@ -18,7 +20,7 @@ public class GameBetter implements IGame {
    private boolean isGettingOutOfPenaltyBox;
 
    public GameBetter() {
-      for (int i = 0; i < 50; i++) {
+      for (int i = 0; i < NUMBER_OF_CARDS; i++) {
          popQuestions.add("Pop Question " + i);
          scienceQuestions.add("Science Question " + i);
          sportsQuestions.add("Sports Question " + i);
@@ -51,7 +53,7 @@ public class GameBetter implements IGame {
 
             System.out.println(players.get(currentPlayer) + " is getting out of the penalty box");
             places[currentPlayer] = places[currentPlayer] + roll;
-            if (places[currentPlayer] > 11) places[currentPlayer] = places[currentPlayer] - 12;
+            if (places[currentPlayer] > 11) places[currentPlayer] = places[currentPlayer] - NUMBER_OF_CELLS;
 
             System.out.println(players.get(currentPlayer) + "'s new location is " + places[currentPlayer]);
             System.out.println("The category is " + currentCategory());
@@ -62,7 +64,7 @@ public class GameBetter implements IGame {
          }
       } else {
          places[currentPlayer] = places[currentPlayer] + roll;
-         if (places[currentPlayer] > 11) places[currentPlayer] = places[currentPlayer] - 12;
+         if (places[currentPlayer] > 11) places[currentPlayer] = places[currentPlayer] - NUMBER_OF_CELLS;
          System.out.println(players.get(currentPlayer) + "'s new location is " + places[currentPlayer]);
          System.out.println("The category is " + currentCategory());
          askQuestion();
