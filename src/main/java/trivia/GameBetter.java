@@ -55,31 +55,26 @@ public class GameBetter implements IGame {
 
             System.out.println(players.get(currentPlayer) + " is getting out of the penalty box");
 
-            resetPlayerPlace(roll);
-
-            System.out.println(players.get(currentPlayer) + "'s new location is " + places[currentPlayer]);
-            System.out.println("The category is " + currentCategory());
-            askQuestion();
+            regularRoll(roll);
          } else {
             System.out.println(players.get(currentPlayer) + " is not getting out of the penalty box");
             isGettingOutOfPenaltyBox = false;
          }
       } else {
-         resetPlayerPlace(roll);
-
-         System.out.println(players.get(currentPlayer) + "'s new location is " + places[currentPlayer]);
-         System.out.println("The category is " + currentCategory());
-         askQuestion();
+         regularRoll(roll);
       }
    }
 
-   private void ff(int roll) {
-      places[currentPlayer] = places[currentPlayer] + roll;
+   private void regularRoll(int roll) {
+      movePlayer(roll);
+      System.out.println(players.get(currentPlayer) + "'s new location is " + places[currentPlayer]);
+      System.out.println("The category is " + currentCategory());
+      askQuestion();
    }
 
-   private void resetPlayerPlace(int roll) {
-      ff(roll);
-      if (places[currentPlayer] > NUMBER_OF_CELLS - 1) {
+   private void movePlayer(int roll) {
+      places[currentPlayer] += roll;
+      if (places[currentPlayer] >= NUMBER_OF_CELLS) {
          places[currentPlayer] -= NUMBER_OF_CELLS;
       }
    }
