@@ -6,11 +6,18 @@ import java.util.List;
 
 // REFACTOR ME
 public class GameBetter implements IGame {
+
+   public static class Player{
+      private String name;
+
+   }
+
    public static final int NUMBER_OF_CARDS = 50;
 
    public static final int NUMBER_OF_CELLS = 12;
 
    private final List<String> players = new ArrayList<>();
+   private final List<Player> playersList = new ArrayList<>();
    private final int[] places = new int[6];
    private final int[] purses = new int[6];
    private final boolean[] inPenaltyBox = new boolean[6];
@@ -31,7 +38,9 @@ public class GameBetter implements IGame {
    }
 
    public boolean add(String playerName) {
+
       players.add(playerName);
+
       places[howManyPlayers()] = 0;
       purses[howManyPlayers()] = 0;
       inPenaltyBox[howManyPlayers()] = false;
