@@ -15,21 +15,24 @@ public class GameTest {
 	public void caracterizationTest() {
 		// runs 10.000 "random" games to see the output of old and new code mathces
 		for (int seed = 1; seed < 10_000; seed++) {
-			testSeed(seed);
+			testSeed(seed, false);
 		}
 	}
 
-	private void testSeed(int seed) {
+	private void testSeed(int seed, boolean printExpected) {
 		String expectedOutput = extractOutput(new Random(seed), new Game());
+		if (printExpected) {
+			System.out.println(expectedOutput);
+		}
 		String actualOutput = extractOutput(new Random(seed), new GameBetter());
 		assertEquals("Change detected for seed " + seed +
 						 ". To breakpoint through it, run this seed alone using the (ignored) test below",
 			expectedOutput, actualOutput);
 	}
 	@Test
-	@Ignore
+	@Ignore("enable back and set a particular seed to see the output")
 	public void oneSeed() {
-		testSeed(1);
+		testSeed(1, true);
 	}
 
 	private String extractOutput(Random rand, IGame aGame) {
@@ -57,8 +60,7 @@ public class GameTest {
 		} finally {
 			System.setOut(old);
 		}
-		String output = new String(baos.toByteArray());
-		// System.out.println(output);
-		return output;
+
+		return new String(baos.toByteArray());
 	}
 }
