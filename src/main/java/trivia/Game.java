@@ -3,7 +3,7 @@ package trivia;
 import java.util.ArrayList;
 import java.util.List;
 
-// REFACTOR ME ME
+// REFACTOR ME
 public class Game {
    private List<String> players = new ArrayList<>();
    private int[] places = new int[6];
