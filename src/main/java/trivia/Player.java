@@ -3,9 +3,10 @@ package trivia;
 import static trivia.GameBetter.NUMBER_OF_CELLS;
 
 public class Player {
-   private String name;
+   private final String name;
    private boolean isInPenaltyBox = false;
    private int place = 0;
+   private int purse = 0;
 
    public Player(String name) {
       this.name = name;
@@ -32,6 +33,10 @@ public class Player {
       if (place >= NUMBER_OF_CELLS) {
          place -= NUMBER_OF_CELLS;
       }
+   }
+
+   public void addCoin() {
+      purse++;
    }
 
 
