@@ -7,28 +7,6 @@ import java.util.List;
 // REFACTOR ME
 public class GameBetter implements IGame {
 
-    public static class Player {
-        private String name;
-        private boolean isInPenaltyBox = false;
-
-        public Player(String name) {
-            this.name = name;
-        }
-
-        public boolean isInPenaltyBox() {
-            return isInPenaltyBox;
-        }
-
-        public void setInPenaltyBox(boolean inPenaltyBox) {
-            isInPenaltyBox = inPenaltyBox;
-        }
-
-        @Override
-        public String toString() {
-            return name;
-        }
-    }
-
     public static final int NUMBER_OF_CARDS = 50;
 
     public static final int NUMBER_OF_CELLS = 12;
@@ -36,7 +14,6 @@ public class GameBetter implements IGame {
     private final List<Player> players = new ArrayList<>();
     private final int[] places = new int[6];
     private final int[] purses = new int[6];
-    private final boolean[] inPenaltyBox = new boolean[6];
     private final List<String> popQuestions = new LinkedList<>();
     private final List<String> scienceQuestions = new LinkedList<>();
     private final List<String> sportsQuestions = new LinkedList<>();
@@ -54,12 +31,10 @@ public class GameBetter implements IGame {
     }
 
     public boolean add(String playerName) {
-
         players.add(new Player(playerName));
 
         places[howManyPlayers()] = 0;
         purses[howManyPlayers()] = 0;
-        inPenaltyBox[howManyPlayers()] = false;
 
         System.out.println(playerName + " was added");
         System.out.println("They are player number " + players.size());
@@ -92,16 +67,18 @@ public class GameBetter implements IGame {
 
     private void regularRoll(int roll) {
         movePlayer(roll);
-        System.out.println(players.get(currentPlayer) + "'s new location is " + places[currentPlayer]);
+        System.out.println(players.get(currentPlayer) + "'s new location is " + players.get(currentPlayer).getPlace());
         System.out.println("The category is " + currentCategory());
         askQuestion();
     }
 
     private void movePlayer(int roll) {
-        places[currentPlayer] += roll;
-        if (places[currentPlayer] >= NUMBER_OF_CELLS) {
-            places[currentPlayer] -= NUMBER_OF_CELLS;
-        }
+        players.get(currentPlayer).roll(roll);
+
+//        players.get(currentPlayer).getPlace() += roll;
+//        if (players.get(currentPlayer).getPlace() >= NUMBER_OF_CELLS) {
+//            players.get(currentPlayer).getPlace() -= NUMBER_OF_CELLS;
+//        }
     }
 
     private void askQuestion() {
@@ -120,15 +97,15 @@ public class GameBetter implements IGame {
     }
 
     private String currentCategory() {
-        if (places[currentPlayer] == 0) return "Pop";
-        if (places[currentPlayer] == 4) return "Pop";
-        if (places[currentPlayer] == 8) return "Pop";
-        if (places[currentPlayer] == 1) return "Science";
-        if (places[currentPlayer] == 5) return "Science";
-        if (places[currentPlayer] == 9) return "Science";
-        if (places[currentPlayer] == 2) return "Sports";
-        if (places[currentPlayer] == 6) return "Sports";
-        if (places[currentPlayer] == 10) return "Sports";
+        if (players.get(currentPlayer).getPlace() == 0) return "Pop";
+        if (players.get(currentPlayer).getPlace() == 4) return "Pop";
+        if (players.get(currentPlayer).getPlace() == 8) return "Pop";
+        if (players.get(currentPlayer).getPlace() == 1) return "Science";
+        if (players.get(currentPlayer).getPlace() == 5) return "Science";
+        if (players.get(currentPlayer).getPlace() == 9) return "Science";
+        if (players.get(currentPlayer).getPlace() == 2) return "Sports";
+        if (players.get(currentPlayer).getPlace() == 6) return "Sports";
+        if (players.get(currentPlayer).getPlace() == 10) return "Sports";
         return "Rock";
     }
 
