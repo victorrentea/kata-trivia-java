@@ -9,9 +9,19 @@ public class GameBetter implements IGame {
 
     public static class Player {
         private String name;
+        private boolean isInPenaltyBox = false;
 
         public Player(String name) {
             this.name = name;
+        }
+
+        public boolean isInPenaltyBox() {
+            return isInPenaltyBox;
+        }
+
+        public Player setInPenaltyBox(boolean inPenaltyBox) {
+            isInPenaltyBox = inPenaltyBox;
+            return this;
         }
 
         @Override
