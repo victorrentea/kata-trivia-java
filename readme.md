@@ -10,7 +10,7 @@ You should discover more the details from actual code, just like in real-life. G
 Additionally, you could run the PlayGame.main() to actually play the game to get the feeling.
 
 ## Let there be tests!
-Once upon a time, there was an ugly implementation of the Trivia Game.
+Once upon a time, there was an ugly implementation of the Trivia Game. 
 
 Someone once noticed that as long as the same input is provided to the system, 
 it will print the same output at the console. So that guy then had the idea to 
