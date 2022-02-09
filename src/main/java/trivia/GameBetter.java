@@ -19,9 +19,8 @@ public class GameBetter implements IGame {
             return isInPenaltyBox;
         }
 
-        public Player setInPenaltyBox(boolean inPenaltyBox) {
+        public void setInPenaltyBox(boolean inPenaltyBox) {
             isInPenaltyBox = inPenaltyBox;
-            return this;
         }
 
         @Override
@@ -75,7 +74,7 @@ public class GameBetter implements IGame {
         System.out.println(players.get(currentPlayer) + " is the current player");
         System.out.println("They have rolled a " + roll);
 
-        if (inPenaltyBox[currentPlayer]) {
+        if (players.get(currentPlayer).isInPenaltyBox()) {
             if (roll % 2 != 0) {
                 isGettingOutOfPenaltyBox = true;
 
@@ -134,7 +133,7 @@ public class GameBetter implements IGame {
     }
 
     public boolean wasCorrectlyAnswered() {
-        if (inPenaltyBox[currentPlayer]) {
+        if (players.get(currentPlayer).isInPenaltyBox()) {
             if (isGettingOutOfPenaltyBox) {
                 System.out.println("Answer was correct!!!!");
                 purses[currentPlayer]++;
@@ -175,7 +174,7 @@ public class GameBetter implements IGame {
     public boolean wrongAnswer() {
         System.out.println("Question was incorrectly answered");
         System.out.println(players.get(currentPlayer) + " was sent to the penalty box");
-        inPenaltyBox[currentPlayer] = true;
+        players.get(currentPlayer).setInPenaltyBox(true);
 
         currentPlayer++;
         if (currentPlayer == players.size()) currentPlayer = 0;
