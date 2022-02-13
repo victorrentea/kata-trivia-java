@@ -8,11 +8,9 @@ import java.util.List;
 public class GameBetter implements IGame {
 
     public static final int NUMBER_OF_CARDS = 50;
-
     public static final int NUMBER_OF_CELLS = 12;
 
     private final List<Player> players = new ArrayList<>();
-    private final int[] places = new int[6];
     private final int[] purses = new int[6];
     private final List<String> popQuestions = new LinkedList<>();
     private final List<String> scienceQuestions = new LinkedList<>();
@@ -33,7 +31,7 @@ public class GameBetter implements IGame {
     public boolean add(String playerName) {
         players.add(new Player(playerName));
 
-        places[howManyPlayers()] = 0;
+
         purses[howManyPlayers()] = 0;
 
         System.out.println(playerName + " was added");
@@ -73,7 +71,7 @@ public class GameBetter implements IGame {
     }
 
     private void movePlayer(int roll) {
-        players.get(currentPlayer).roll(roll);
+        players.get(currentPlayer).moveToPlace(roll);
 
 //        players.get(currentPlayer).getPlace() += roll;
 //        if (players.get(currentPlayer).getPlace() >= NUMBER_OF_CELLS) {
@@ -114,6 +112,7 @@ public class GameBetter implements IGame {
             if (isGettingOutOfPenaltyBox) {
                 System.out.println("Answer was correct!!!!");
                 purses[currentPlayer]++;
+                players.get(currentPlayer).addCoin();
                 System.out.println(players.get(currentPlayer)
                         + " now has "
                         + purses[currentPlayer]
@@ -134,10 +133,10 @@ public class GameBetter implements IGame {
         } else {
 
             System.out.println("Answer was corrent!!!!");
-            purses[currentPlayer]++;
+            players.get(currentPlayer).addCoin();
             System.out.println(players.get(currentPlayer)
                     + " now has "
-                    + purses[currentPlayer]
+                    + players.get(currentPlayer).getCoins()
                     + " Gold Coins.");
 
             boolean winner = didPlayerWin();
@@ -158,8 +157,4 @@ public class GameBetter implements IGame {
         return true;
     }
 
-
-    private boolean didPlayerWin() {
-        return !(purses[currentPlayer] == 6);
-    }
 }
