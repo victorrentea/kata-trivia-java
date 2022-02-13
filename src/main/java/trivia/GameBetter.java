@@ -107,6 +107,7 @@ public class GameBetter implements IGame {
         }
         if (currentCategory().equals("Rock")) {
             System.out.println(rockQuestions.remove(0));
+
         }
     }
 
