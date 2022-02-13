@@ -33,8 +33,8 @@ public class Player {
    }
 
 
-   private boolean didPlayerWin() {
-      return !(purses[currentPlayer] == 6);
+   public boolean didPlayerWin() {
+      return !(coins == 6);
    }
 
 

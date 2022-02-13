@@ -11,11 +11,17 @@ public class GameBetter implements IGame {
     public static final int NUMBER_OF_CELLS = 12;
 
     private final List<Player> players = new ArrayList<>();
-    private final int[] purses = new int[6];
+
     private final List<String> popQuestions = new LinkedList<>();
     private final List<String> scienceQuestions = new LinkedList<>();
     private final List<String> sportsQuestions = new LinkedList<>();
     private final List<String> rockQuestions = new LinkedList<>();
+
+    enum QuestionCategory {
+        POP, SCIENCE, SPORTS, ROCK;
+    }
+
+
     private int currentPlayer = 0;
     private boolean isGettingOutOfPenaltyBox;
 
@@ -31,8 +37,6 @@ public class GameBetter implements IGame {
     public boolean add(String playerName) {
         players.add(new Player(playerName));
 
-
-        purses[howManyPlayers()] = 0;
 
         System.out.println(playerName + " was added");
         System.out.println("They are player number " + players.size());
@@ -89,7 +93,7 @@ public class GameBetter implements IGame {
         if (currentCategory().equals("Sports")) {
             System.out.println(sportsQuestions.remove(0));
         }
-        if (currentCategory().equals("Rock")) {
+        if (currentCategory().equals("Rockemu")) {
             System.out.println(rockQuestions.remove(0));
         }
     }
@@ -98,9 +102,11 @@ public class GameBetter implements IGame {
         if (players.get(currentPlayer).getPlace() == 0) return "Pop";
         if (players.get(currentPlayer).getPlace() == 4) return "Pop";
         if (players.get(currentPlayer).getPlace() == 8) return "Pop";
+
         if (players.get(currentPlayer).getPlace() == 1) return "Science";
         if (players.get(currentPlayer).getPlace() == 5) return "Science";
         if (players.get(currentPlayer).getPlace() == 9) return "Science";
+
         if (players.get(currentPlayer).getPlace() == 2) return "Sports";
         if (players.get(currentPlayer).getPlace() == 6) return "Sports";
         if (players.get(currentPlayer).getPlace() == 10) return "Sports";
@@ -111,14 +117,13 @@ public class GameBetter implements IGame {
         if (players.get(currentPlayer).isInPenaltyBox()) {
             if (isGettingOutOfPenaltyBox) {
                 System.out.println("Answer was correct!!!!");
-                purses[currentPlayer]++;
                 players.get(currentPlayer).addCoin();
                 System.out.println(players.get(currentPlayer)
                         + " now has "
-                        + purses[currentPlayer]
+                        + players.get(currentPlayer).getCoins()
                         + " Gold Coins.");
 
-                boolean winner = didPlayerWin();
+                boolean winner = players.get(currentPlayer).didPlayerWin();
                 currentPlayer++;
                 if (currentPlayer == players.size()) currentPlayer = 0;
 
@@ -139,7 +144,7 @@ public class GameBetter implements IGame {
                     + players.get(currentPlayer).getCoins()
                     + " Gold Coins.");
 
-            boolean winner = didPlayerWin();
+            boolean winner = players.get(currentPlayer).didPlayerWin();
             currentPlayer++;
             if (currentPlayer == players.size()) currentPlayer = 0;
 
