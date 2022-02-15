@@ -16,8 +16,8 @@ public class GameBetter implements IGame {
             return inPenaltyBox;
         }
 
-        public void setInPenaltyBox(boolean inPenaltyBox) {
-            this.inPenaltyBox = inPenaltyBox;
+        public void moveToPenaltyBox() {
+            this.inPenaltyBox = true;
         }
 
         public Player(String name) {
@@ -37,7 +37,6 @@ public class GameBetter implements IGame {
     private final List<Player> players = new ArrayList<>();
     private final int[] places = new int[6];
     private final int[] purses = new int[6];
-    private final boolean[] inPenaltyBox = new boolean[6];
     private final List<String> popQuestions = new LinkedList<>();
     private final List<String> scienceQuestions = new LinkedList<>();
     private final List<String> sportsQuestions = new LinkedList<>();
@@ -60,7 +59,6 @@ public class GameBetter implements IGame {
 
         places[howManyPlayers()] = 0;
         purses[howManyPlayers()] = 0;
-        inPenaltyBox[howManyPlayers()] = false;
 
         System.out.println(playerName + " was added");
         System.out.println("They are player number " + players.size());
@@ -75,7 +73,7 @@ public class GameBetter implements IGame {
         System.out.println(players.get(currentPlayer) + " is the current player");
         System.out.println("They have rolled a " + roll);
 
-        if (inPenaltyBox[currentPlayer]) {
+        if (players.get(currentPlayer).isInPenaltyBox()) {
             if (roll % 2 != 0) {
                 isGettingOutOfPenaltyBox = true;
 
@@ -135,7 +133,7 @@ public class GameBetter implements IGame {
     }
 
     public boolean wasCorrectlyAnswered() {
-        if (inPenaltyBox[currentPlayer]) {
+        if (players.get(currentPlayer).isInPenaltyBox()) {
             if (isGettingOutOfPenaltyBox) {
                 System.out.println("Answer was correct!!!!");
                 purses[currentPlayer]++;
@@ -176,7 +174,7 @@ public class GameBetter implements IGame {
     public boolean wrongAnswer() {
         System.out.println("Question was incorrectly answered");
         System.out.println(players.get(currentPlayer) + " was sent to the penalty box");
-        inPenaltyBox[currentPlayer] = true;
+        players.get(currentPlayer).moveToPenaltyBox();
 
         currentPlayer++;
         if (currentPlayer == players.size()) currentPlayer = 0;
