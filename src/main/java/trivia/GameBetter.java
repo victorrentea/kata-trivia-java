@@ -10,6 +10,19 @@ public class GameBetter implements IGame {
     public static class Player {
         private String name;
         private int position = 0;
+        private int purse = 0;
+
+        public void addCoin() {
+            purse++;
+        }
+
+        public int getPurse() {
+            return purse;
+        }
+
+        public void setPurse(int purse) {
+            this.purse = purse;
+        }
 
         private boolean inPenaltyBox = false;
 
@@ -19,10 +32,6 @@ public class GameBetter implements IGame {
 
         public int getPosition() {
             return position;
-        }
-
-        public void setPosition(int position) {
-            this.position = position;
         }
 
         public void moveToPenaltyBox() {
@@ -37,6 +46,13 @@ public class GameBetter implements IGame {
         public String toString() {
             return name;
         }
+
+        public void movePlayer(int roll) {
+            position += roll;
+            if (position >= NUMBER_OF_CELLS) {
+                position -= NUMBER_OF_CELLS;
+            }
+        }
     }
 
     public static final int NUMBER_OF_CARDS = 50;
@@ -44,7 +60,6 @@ public class GameBetter implements IGame {
     public static final int NUMBER_OF_CELLS = 12;
 
     private final List<Player> players = new ArrayList<>();
-    private final int[] purses = new int[6];
     private final List<String> popQuestions = new LinkedList<>();
     private final List<String> scienceQuestions = new LinkedList<>();
     private final List<String> sportsQuestions = new LinkedList<>();
@@ -63,8 +78,6 @@ public class GameBetter implements IGame {
 
     public boolean add(String playerName) {
         players.add(new Player(playerName));
-
-        purses[howManyPlayers()] = 0;
 
         System.out.println(playerName + " was added");
         System.out.println("They are player number " + players.size());
@@ -96,19 +109,12 @@ public class GameBetter implements IGame {
     }
 
     private void regularRoll(int roll) {
-        movePlayer(roll);
+        currentPlayer().movePlayer(roll);
         System.out.println(
                 currentPlayer() + "'s new location is " + currentPlayer()
                         .getPosition());
         System.out.println("The category is " + currentCategory());
         askQuestion();
-    }
-
-    private void movePlayer(int roll) {
-        currentPlayer().setPosition(currentPlayer().getPosition() + roll);
-        if (currentPlayer().getPosition() >= NUMBER_OF_CELLS) {
-            currentPlayer().setPosition(currentPlayer().getPosition() - NUMBER_OF_CELLS);
-        }
     }
 
     private Player currentPlayer() {
@@ -148,10 +154,11 @@ public class GameBetter implements IGame {
         if (currentPlayer().isInPenaltyBox()) {
             if (isGettingOutOfPenaltyBox) {
                 System.out.println("Answer was correct!!!!");
+                currentPlayer().addCoin();
                 purses[currentPlayer]++;
                 System.out.println(currentPlayer()
                                    + " now has "
-                                   + purses[currentPlayer]
+                                   + currentPlayer().getPurse()
                                    + " Gold Coins.");
 
                 boolean winner = didPlayerWin();
@@ -169,10 +176,10 @@ public class GameBetter implements IGame {
         } else {
 
             System.out.println("Answer was corrent!!!!");
-            purses[currentPlayer]++;
+            currentPlayer().addCoin();
             System.out.println(currentPlayer()
                                + " now has "
-                               + purses[currentPlayer]
+                               + currentPlayer().getPurse()
                                + " Gold Coins.");
 
             boolean winner = didPlayerWin();
@@ -195,6 +202,6 @@ public class GameBetter implements IGame {
 
 
     private boolean didPlayerWin() {
-        return !(purses[currentPlayer] == 6);
+        return !(currentPlayer().getPurse() == 6);
     }
 }
