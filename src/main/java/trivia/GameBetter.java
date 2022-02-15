@@ -20,7 +20,7 @@ public class GameBetter implements IGame {
     private final List<String> sportsQuestions = new LinkedList<>();
     private final List<String> rockQuestions = new LinkedList<>();
 
-    private int currentPlayer = 0;
+    private int currentPlayerIndex = 0;
     private boolean isGettingOutOfPenaltyBox;
 
     public GameBetter() {
@@ -69,40 +69,34 @@ public class GameBetter implements IGame {
         System.out.println(
                 currentPlayer() + "'s new location is " + currentPlayer()
                         .getPosition());
-        System.out.println("The category is " + currentCategory());
+        System.out.println("The category is " + currentCategory(currentPlayer().getPosition()));
         askQuestion();
     }
 
     private Player currentPlayer() {
-        return players.get(currentPlayer);
+        return players.get(currentPlayerIndex);
     }
 
     private void askQuestion() {
-        if (currentCategory().equals("Pop")) {
+        if (currentCategory(currentPlayer().getPosition()).equals("Pop")) {
             System.out.println(popQuestions.remove(0));
         }
-        if (currentCategory().equals("Science")) {
+        if (currentCategory(currentPlayer().getPosition()).equals("Science")) {
             System.out.println(scienceQuestions.remove(0));
         }
-        if (currentCategory().equals("Sports")) {
+        if (currentCategory(currentPlayer().getPosition()).equals("Sports")) {
             System.out.println(sportsQuestions.remove(0));
         }
-        if (currentCategory().equals("Rock")) {
+        if (currentCategory(currentPlayer().getPosition()).equals("Rock")) {
             System.out.println(rockQuestions.remove(0));
 
         }
     }
 
-    private String currentCategory() {
-        if (currentPlayer().getPosition() == 0) return "Pop";
-        if (currentPlayer().getPosition() == 4) return "Pop";
-        if (currentPlayer().getPosition() == 8) return "Pop";
-        if (currentPlayer().getPosition() == 1) return "Science";
-        if (currentPlayer().getPosition() == 5) return "Science";
-        if (currentPlayer().getPosition() == 9) return "Science";
-        if (currentPlayer().getPosition() == 2) return "Sports";
-        if (currentPlayer().getPosition() == 6) return "Sports";
-        if (currentPlayer().getPosition() == 10) return "Sports";
+    private String currentCategory(int position) {
+        if (position % 4 == 0) return "Pop";
+        if (position % 4 == 1) return "Science";
+        if (position % 4 == 2) return "Sports";
         return "Rock";
     }
 
@@ -117,13 +111,13 @@ public class GameBetter implements IGame {
                                    + " Gold Coins.");
 
                 boolean winner = didPlayerWin();
-                currentPlayer++;
-                if (currentPlayer == players.size()) currentPlayer = 0;
+                currentPlayerIndex++;
+                if (currentPlayerIndex == players.size()) currentPlayerIndex = 0;
 
                 return winner;
             } else {
-                currentPlayer++;
-                if (currentPlayer == players.size()) currentPlayer = 0;
+                currentPlayerIndex++;
+                if (currentPlayerIndex == players.size()) currentPlayerIndex = 0;
                 return true;
             }
 
@@ -138,8 +132,8 @@ public class GameBetter implements IGame {
                                + " Gold Coins.");
 
             boolean winner = didPlayerWin();
-            currentPlayer++;
-            if (currentPlayer == players.size()) currentPlayer = 0;
+            currentPlayerIndex++;
+            if (currentPlayerIndex == players.size()) currentPlayerIndex = 0;
 
             return winner;
         }
@@ -150,8 +144,8 @@ public class GameBetter implements IGame {
         System.out.println(currentPlayer() + " was sent to the penalty box");
         currentPlayer().moveToPenaltyBox();
 
-        currentPlayer++;
-        if (currentPlayer == players.size()) currentPlayer = 0;
+        currentPlayerIndex++;
+        if (currentPlayerIndex == players.size()) currentPlayerIndex = 0;
         return true;
     }
 
