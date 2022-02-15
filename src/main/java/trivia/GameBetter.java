@@ -69,7 +69,7 @@ public class GameBetter implements IGame {
         System.out.println(
                 currentPlayer() + "'s new location is " + currentPlayer()
                         .getPosition());
-        System.out.println("The category is " + currentCategory(currentPlayer().getPosition()));
+        System.out.println("The category is " + findCurrentCategory(currentPlayer().getPosition()));
         askQuestion();
     }
 
@@ -78,26 +78,35 @@ public class GameBetter implements IGame {
     }
 
     private void askQuestion() {
-        if (currentCategory(currentPlayer().getPosition()).equals("Pop")) {
-            System.out.println(popQuestions.remove(0));
-        }
-        if (currentCategory(currentPlayer().getPosition()).equals("Science")) {
-            System.out.println(scienceQuestions.remove(0));
-        }
-        if (currentCategory(currentPlayer().getPosition()).equals("Sports")) {
-            System.out.println(sportsQuestions.remove(0));
-        }
-        if (currentCategory(currentPlayer().getPosition()).equals("Rock")) {
-            System.out.println(rockQuestions.remove(0));
+        String currentCategory = findCurrentCategory(currentPlayer().getPosition());
+        List<String> questions = null; //TODO Don't!
 
+        if ("Pop".equals(currentCategory)) {
+            questions = popQuestions;
         }
+        if ("Science".equals(currentCategory)) {
+            questions = scienceQuestions;
+        }
+        if ("Sports".equals(currentCategory)) {
+            questions = sportsQuestions;
+        }
+        if ("Rock".equals(currentCategory)) {
+            questions = rockQuestions;
+        }
+        System.out.println(questions.remove(0));
     }
 
-    private String currentCategory(int position) {
-        if (position % 4 == 0) return "Pop";
-        if (position % 4 == 1) return "Science";
-        if (position % 4 == 2) return "Sports";
-        return "Rock";
+    private String findCurrentCategory(int position) {
+        switch (position % 4) {
+            case 0:
+                return "Pop";
+            case 1:
+                return "Science";
+            case 2:
+                return "Sports";
+            default:
+                return "Rock";
+        }
     }
 
     public boolean wasCorrectlyAnswered() {
