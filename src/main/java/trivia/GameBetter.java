@@ -10,6 +10,16 @@ public class GameBetter implements IGame {
     public static class Player {
         private String name;
 
+        private boolean inPenaltyBox = false;
+
+        public boolean isInPenaltyBox() {
+            return inPenaltyBox;
+        }
+
+        public void setInPenaltyBox(boolean inPenaltyBox) {
+            this.inPenaltyBox = inPenaltyBox;
+        }
+
         public Player(String name) {
             this.name = name;
         }
