@@ -5,65 +5,21 @@ import java.util.LinkedList;
 import java.util.List;
 
 // REFACTOR ME
+
 public class GameBetter implements IGame {
 
-    public static class Player {
-        private String name;
-        private int position = 0;
-        private int purse = 0;
-
-        public void addCoin() {
-            purse++;
-        }
-
-        public int getPurse() {
-            return purse;
-        }
-
-        public void setPurse(int purse) {
-            this.purse = purse;
-        }
-
-        private boolean inPenaltyBox = false;
-
-        public boolean isInPenaltyBox() {
-            return inPenaltyBox;
-        }
-
-        public int getPosition() {
-            return position;
-        }
-
-        public void moveToPenaltyBox() {
-            this.inPenaltyBox = true;
-        }
-
-        public Player(String name) {
-            this.name = name;
-        }
-
-        @Override
-        public String toString() {
-            return name;
-        }
-
-        public void movePlayer(int roll) {
-            position += roll;
-            if (position >= NUMBER_OF_CELLS) {
-                position -= NUMBER_OF_CELLS;
-            }
-        }
-    }
 
     public static final int NUMBER_OF_CARDS = 50;
 
     public static final int NUMBER_OF_CELLS = 12;
 
     private final List<Player> players = new ArrayList<>();
+
     private final List<String> popQuestions = new LinkedList<>();
     private final List<String> scienceQuestions = new LinkedList<>();
     private final List<String> sportsQuestions = new LinkedList<>();
     private final List<String> rockQuestions = new LinkedList<>();
+
     private int currentPlayer = 0;
     private boolean isGettingOutOfPenaltyBox;
 
@@ -155,10 +111,9 @@ public class GameBetter implements IGame {
             if (isGettingOutOfPenaltyBox) {
                 System.out.println("Answer was correct!!!!");
                 currentPlayer().addCoin();
-                purses[currentPlayer]++;
                 System.out.println(currentPlayer()
                                    + " now has "
-                                   + currentPlayer().getPurse()
+                                   + currentPlayer().getCoins()
                                    + " Gold Coins.");
 
                 boolean winner = didPlayerWin();
@@ -179,7 +134,7 @@ public class GameBetter implements IGame {
             currentPlayer().addCoin();
             System.out.println(currentPlayer()
                                + " now has "
-                               + currentPlayer().getPurse()
+                               + currentPlayer().getCoins()
                                + " Gold Coins.");
 
             boolean winner = didPlayerWin();
@@ -202,6 +157,6 @@ public class GameBetter implements IGame {
 
 
     private boolean didPlayerWin() {
-        return !(currentPlayer().getPurse() == 6);
+        return !(currentPlayer().getCoins() == 6);
     }
 }
