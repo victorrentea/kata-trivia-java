@@ -44,7 +44,6 @@ public class GameBetter implements IGame {
     public static final int NUMBER_OF_CELLS = 12;
 
     private final List<Player> players = new ArrayList<>();
-    private final int[] places = new int[6];
     private final int[] purses = new int[6];
     private final List<String> popQuestions = new LinkedList<>();
     private final List<String> scienceQuestions = new LinkedList<>();
@@ -65,7 +64,6 @@ public class GameBetter implements IGame {
     public boolean add(String playerName) {
         players.add(new Player(playerName));
 
-        places[howManyPlayers()] = 0;
         purses[howManyPlayers()] = 0;
 
         System.out.println(playerName + " was added");
@@ -78,18 +76,18 @@ public class GameBetter implements IGame {
     }
 
     public void roll(int roll) {
-        System.out.println(players.get(currentPlayer) + " is the current player");
+        System.out.println(currentPlayer() + " is the current player");
         System.out.println("They have rolled a " + roll);
 
-        if (players.get(currentPlayer).isInPenaltyBox()) {
+        if (currentPlayer().isInPenaltyBox()) {
             if (roll % 2 != 0) {
                 isGettingOutOfPenaltyBox = true;
 
-                System.out.println(players.get(currentPlayer) + " is getting out of the penalty box");
+                System.out.println(currentPlayer() + " is getting out of the penalty box");
 
                 regularRoll(roll);
             } else {
-                System.out.println(players.get(currentPlayer) + " is not getting out of the penalty box");
+                System.out.println(currentPlayer() + " is not getting out of the penalty box");
                 isGettingOutOfPenaltyBox = false;
             }
         } else {
@@ -99,23 +97,22 @@ public class GameBetter implements IGame {
 
     private void regularRoll(int roll) {
         movePlayer(roll);
-        System.out.println(players.get(currentPlayer) + "'s new location is " + places[currentPlayer]);
+        System.out.println(
+                currentPlayer() + "'s new location is " + currentPlayer()
+                        .getPosition());
         System.out.println("The category is " + currentCategory());
         askQuestion();
     }
 
     private void movePlayer(int roll) {
-
-
-        players.get(currentPlayer).setPosition(players.get(currentPlayer).getPosition() + roll);
-        if (players.get(currentPlayer).getPosition() >= NUMBER_OF_CELLS) {
-            players.get(currentPlayer).setPosition(players.get(currentPlayer).getPosition() + roll);
+        currentPlayer().setPosition(currentPlayer().getPosition() + roll);
+        if (currentPlayer().getPosition() >= NUMBER_OF_CELLS) {
+            currentPlayer().setPosition(currentPlayer().getPosition() - NUMBER_OF_CELLS);
         }
+    }
 
-        places[currentPlayer] += roll;
-        if (places[currentPlayer] >= NUMBER_OF_CELLS) {
-            places[currentPlayer] -= NUMBER_OF_CELLS;
-        }
+    private Player currentPlayer() {
+        return players.get(currentPlayer);
     }
 
     private void askQuestion() {
@@ -135,27 +132,27 @@ public class GameBetter implements IGame {
     }
 
     private String currentCategory() {
-        if (places[currentPlayer] == 0) return "Pop";
-        if (places[currentPlayer] == 4) return "Pop";
-        if (places[currentPlayer] == 8) return "Pop";
-        if (places[currentPlayer] == 1) return "Science";
-        if (places[currentPlayer] == 5) return "Science";
-        if (places[currentPlayer] == 9) return "Science";
-        if (places[currentPlayer] == 2) return "Sports";
-        if (places[currentPlayer] == 6) return "Sports";
-        if (places[currentPlayer] == 10) return "Sports";
+        if (currentPlayer().getPosition() == 0) return "Pop";
+        if (currentPlayer().getPosition() == 4) return "Pop";
+        if (currentPlayer().getPosition() == 8) return "Pop";
+        if (currentPlayer().getPosition() == 1) return "Science";
+        if (currentPlayer().getPosition() == 5) return "Science";
+        if (currentPlayer().getPosition() == 9) return "Science";
+        if (currentPlayer().getPosition() == 2) return "Sports";
+        if (currentPlayer().getPosition() == 6) return "Sports";
+        if (currentPlayer().getPosition() == 10) return "Sports";
         return "Rock";
     }
 
     public boolean wasCorrectlyAnswered() {
-        if (players.get(currentPlayer).isInPenaltyBox()) {
+        if (currentPlayer().isInPenaltyBox()) {
             if (isGettingOutOfPenaltyBox) {
                 System.out.println("Answer was correct!!!!");
                 purses[currentPlayer]++;
-                System.out.println(players.get(currentPlayer)
-                        + " now has "
-                        + purses[currentPlayer]
-                        + " Gold Coins.");
+                System.out.println(currentPlayer()
+                                   + " now has "
+                                   + purses[currentPlayer]
+                                   + " Gold Coins.");
 
                 boolean winner = didPlayerWin();
                 currentPlayer++;
@@ -173,10 +170,10 @@ public class GameBetter implements IGame {
 
             System.out.println("Answer was corrent!!!!");
             purses[currentPlayer]++;
-            System.out.println(players.get(currentPlayer)
-                    + " now has "
-                    + purses[currentPlayer]
-                    + " Gold Coins.");
+            System.out.println(currentPlayer()
+                               + " now has "
+                               + purses[currentPlayer]
+                               + " Gold Coins.");
 
             boolean winner = didPlayerWin();
             currentPlayer++;
@@ -188,8 +185,8 @@ public class GameBetter implements IGame {
 
     public boolean wrongAnswer() {
         System.out.println("Question was incorrectly answered");
-        System.out.println(players.get(currentPlayer) + " was sent to the penalty box");
-        players.get(currentPlayer).moveToPenaltyBox();
+        System.out.println(currentPlayer() + " was sent to the penalty box");
+        currentPlayer().moveToPenaltyBox();
 
         currentPlayer++;
         if (currentPlayer == players.size()) currentPlayer = 0;
