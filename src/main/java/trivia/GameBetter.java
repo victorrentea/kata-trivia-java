@@ -9,11 +9,20 @@ public class GameBetter implements IGame {
 
     public static class Player {
         private String name;
+        private int position = 0;
 
         private boolean inPenaltyBox = false;
 
         public boolean isInPenaltyBox() {
             return inPenaltyBox;
+        }
+
+        public int getPosition() {
+            return position;
+        }
+
+        public void setPosition(int position) {
+            this.position = position;
         }
 
         public void moveToPenaltyBox() {
@@ -54,7 +63,6 @@ public class GameBetter implements IGame {
     }
 
     public boolean add(String playerName) {
-
         players.add(new Player(playerName));
 
         places[howManyPlayers()] = 0;
@@ -97,6 +105,13 @@ public class GameBetter implements IGame {
     }
 
     private void movePlayer(int roll) {
+
+
+        players.get(currentPlayer).setPosition(players.get(currentPlayer).getPosition() + roll);
+        if (players.get(currentPlayer).getPosition() >= NUMBER_OF_CELLS) {
+            players.get(currentPlayer).setPosition(players.get(currentPlayer).getPosition() + roll);
+        }
+
         places[currentPlayer] += roll;
         if (places[currentPlayer] >= NUMBER_OF_CELLS) {
             places[currentPlayer] -= NUMBER_OF_CELLS;
