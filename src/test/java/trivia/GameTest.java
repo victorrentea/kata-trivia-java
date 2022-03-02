@@ -3,6 +3,9 @@ package trivia;
 
 import org.junit.Ignore;
 import org.junit.Test;
+import trivia.game.Game;
+import trivia.game.GameBetter;
+import trivia.game.IGame;
 
 import java.io.ByteArrayOutputStream;
 import java.io.PrintStream;
