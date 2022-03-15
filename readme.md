@@ -1,5 +1,6 @@
 # Trivia Refactoring Kata
 Arranged by Victor Rentea
+Just one of the many coding katas at [kata-log.rocks](https://kata-log.rocks/)
 
 ## The problem
 Here is a preview of a game in action.
