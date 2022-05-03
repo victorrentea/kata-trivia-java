@@ -98,7 +98,7 @@ public class GameBetter implements IGame {
          System.out.println(rockQuestions.removeFirst());
    }
 
-   // Reduced multiple if statements using Reminder
+   // Reduced multiple if statements using the Modulo Operator
    private Category currentCategory() {
       if (places[currentPlayer] % 4 == 0) return Category.POP;
       if (places[currentPlayer] % 4 == 1) return Category.SCIENCE;
