@@ -1,3 +1,5 @@
+// Created this new enum Class for the Question Categories
+
 package trivia;
 
 public enum Category {
