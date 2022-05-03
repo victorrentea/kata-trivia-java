@@ -5,15 +5,15 @@ import java.util.LinkedList;
 
 // REFACTOR ME
 public class GameBetter implements IGame {
-   ArrayList players = new ArrayList();
+   ArrayList<String> players = new ArrayList<>();
    int[] places = new int[6];
    int[] purses = new int[6];
    boolean[] inPenaltyBox = new boolean[6];
 
-   LinkedList popQuestions = new LinkedList();
-   LinkedList scienceQuestions = new LinkedList();
-   LinkedList sportsQuestions = new LinkedList();
-   LinkedList rockQuestions = new LinkedList();
+   LinkedList<String> popQuestions = new LinkedList<>();
+   LinkedList<String> scienceQuestions = new LinkedList<>();
+   LinkedList<String> sportsQuestions = new LinkedList<>();
+   LinkedList<String> rockQuestions = new LinkedList<>();
 
    int currentPlayer = 0;
    boolean isGettingOutOfPenaltyBox;
@@ -86,29 +86,24 @@ public class GameBetter implements IGame {
 
    }
 
+   // Created a new enum Class for Question Categories
    private void askQuestion() {
-      if (currentCategory() == "Pop")
+      if (Category.POP.equals(currentCategory()))
          System.out.println(popQuestions.removeFirst());
-      if (currentCategory() == "Science")
+      if (Category.SCIENCE.equals(currentCategory()))
          System.out.println(scienceQuestions.removeFirst());
-      if (currentCategory() == "Sports")
+      if (Category.SPORTS.equals(currentCategory()))
          System.out.println(sportsQuestions.removeFirst());
-      if (currentCategory() == "Rock")
+      if (Category.ROCK.equals(currentCategory()))
          System.out.println(rockQuestions.removeFirst());
    }
 
-
-   private String currentCategory() {
-      if (places[currentPlayer] == 0) return "Pop";
-      if (places[currentPlayer] == 4) return "Pop";
-      if (places[currentPlayer] == 8) return "Pop";
-      if (places[currentPlayer] == 1) return "Science";
-      if (places[currentPlayer] == 5) return "Science";
-      if (places[currentPlayer] == 9) return "Science";
-      if (places[currentPlayer] == 2) return "Sports";
-      if (places[currentPlayer] == 6) return "Sports";
-      if (places[currentPlayer] == 10) return "Sports";
-      return "Rock";
+   // Reduced multiple if statements using Reminder
+   private Category currentCategory() {
+      if (places[currentPlayer] % 4 == 0) return Category.POP;
+      if (places[currentPlayer] % 4 == 1) return Category.SCIENCE;
+      if (places[currentPlayer] % 4 == 2) return Category.SPORTS;
+      return Category.ROCK;
    }
 
    public boolean wasCorrectlyAnswered() {
