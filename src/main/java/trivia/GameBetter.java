@@ -5,61 +5,67 @@ import java.util.Deque;
 import java.util.LinkedList;
 import java.util.List;
 
+class Deck {
+    Deque<String> popQuestions = new LinkedList<>();
+    Deque<String> scienceQuestions = new LinkedList<>();
+    Deque<String> sportsQuestions = new LinkedList<>();
+    Deque<String> rockQuestions = new LinkedList<>();
+
+    public Deck() {
+        for (int i = 0; i < 50; i++) {
+            popQuestions.addLast("Pop Question " + i);
+            scienceQuestions.addLast(("Science Question " + i));
+            sportsQuestions.addLast(("Sports Question " + i));
+            rockQuestions.addLast(createRockQuestion(i));
+        }
+    }
+
+    public String createRockQuestion(int index) {
+        return "Rock Question " + index;
+    }
+
+    public String getQuestion(GameBetter.Category category) {
+        switch (category) {
+            case POP:
+                return this.getPopQuestion();
+            case SCIENCE:
+                return this.getScienceQuestion();
+            case SPORTS:
+                return this.getSportsQuestion();
+            case ROCK:
+                return this.getRockQuestion();
+            default:
+                throw new IllegalArgumentException("No questions for your category :)");
+        }
+    }
+
+    public String getPopQuestion() {
+        return popQuestions.removeFirst();
+    }
+
+    public String getScienceQuestion() {
+        return scienceQuestions.removeFirst();
+    }
+
+    public String getSportsQuestion() {
+        return sportsQuestions.removeFirst();
+    }
+
+    public String getRockQuestion() {
+        return rockQuestions.removeFirst();
+    }
+
+
+}
+
 // REFACTOR ME
 public class GameBetter implements IGame {
+    private static final int WINNING_COIN_NO = 6;
+    private static final int BOARD_POSITION_NO = 12;
     List<String> players = new ArrayList<>();
     int[] places = new int[6];
     int[] purses = new int[6];
     boolean[] inPenaltyBox = new boolean[6];
-
-    public class Deck {
-        Deque<String> popQuestions = new LinkedList<>();
-        Deque<String> scienceQuestions = new LinkedList<>();
-        Deque<String> sportsQuestions = new LinkedList<>();
-        Deque<String> rockQuestions = new LinkedList<>();
-
-        public Deck() {
-            for (int i = 0; i < 50; i++) {
-                popQuestions.addLast("Pop Question " + i);
-                scienceQuestions.addLast(("Science Question " + i));
-                sportsQuestions.addLast(("Sports Question " + i));
-                rockQuestions.addLast(createRockQuestion(i));
-            }
-        }
-
-        public String getQuestion(Category category) {
-            switch (category) {
-                case POP:
-                    return this.getPopQuestion();
-                case SCIENCE:
-                    return this.getScienceQuestion();
-                case SPORTS:
-                    return this.getSportsQuestion();
-                case ROCK:
-                    return this.getRockQuestion();
-                default:
-                    throw new IllegalArgumentException("No questions for your category :)");
-            }
-        }
-
-        public String getPopQuestion() {
-            return popQuestions.removeFirst();
-        }
-
-        public String getScienceQuestion() {
-            return scienceQuestions.removeFirst();
-        }
-
-        public String getSportsQuestion() {
-            return sportsQuestions.removeFirst();
-        }
-
-        public String getRockQuestion() {
-            return rockQuestions.removeFirst();
-        }
-
-
-    }
 
     Deck deck;
 
@@ -70,9 +76,6 @@ public class GameBetter implements IGame {
         deck = new Deck();
     }
 
-    public String createRockQuestion(int index) {
-        return "Rock Question " + index;
-    }
 
     public boolean add(String playerName) {
         players.add(playerName);
@@ -99,7 +102,8 @@ public class GameBetter implements IGame {
 
                 System.out.println(players.get(currentPlayer) + " is getting out of the penalty box");
                 places[currentPlayer] = places[currentPlayer] + roll;
-                if (places[currentPlayer] > 11) places[currentPlayer] = places[currentPlayer] - 12;
+                if (places[currentPlayer] >= BOARD_POSITION_NO)
+                    places[currentPlayer] = places[currentPlayer] - BOARD_POSITION_NO;
 
                 System.out.println(players.get(currentPlayer)
                         + "'s new location is "
@@ -210,6 +214,6 @@ public class GameBetter implements IGame {
 
 
     private boolean didPlayerWin() {
-        return !(purses[currentPlayer] == 6);
+        return purses[currentPlayer] != WINNING_COIN_NO;
     }
 }
