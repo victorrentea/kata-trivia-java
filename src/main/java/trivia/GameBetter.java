@@ -63,7 +63,7 @@ public class GameBetter implements IGame {
                 System.out.println(players.get(currentPlayer)
                         + "'s new location is "
                         + places[currentPlayer]);
-                System.out.println("The category is " + currentCategory());
+                System.out.println("The category is " + currentCategory().getName());
                 askQuestion();
             } else {
                 System.out.println(players.get(currentPlayer) + " is not getting out of the penalty box");
@@ -78,35 +78,57 @@ public class GameBetter implements IGame {
             System.out.println(players.get(currentPlayer)
                     + "'s new location is "
                     + places[currentPlayer]);
-            System.out.println("The category is " + currentCategory());
+            System.out.println("The category is " + currentCategory().getName());
             askQuestion();
         }
 
     }
 
+    enum Category {
+        POP("Pop"),
+        SCIENCE("Science"),
+        SPORTS("Sports"),
+        ROCK("Rock");
+        String name;
+
+        Category(String name) {
+            this.name = name;
+        }
+
+        public String getName() {
+            return name;
+        }
+    }
+
     private void askQuestion() {
-        if (currentCategory() == "Pop")
-            System.out.println(popQuestions.removeFirst());
-        if (currentCategory() == "Science")
-            System.out.println(scienceQuestions.removeFirst());
-        if (currentCategory() == "Sports")
-            System.out.println(sportsQuestions.removeFirst());
-        if (currentCategory() == "Rock")
-            System.out.println(rockQuestions.removeFirst());
+        switch (currentCategory()) {
+            case POP:
+                System.out.println(popQuestions.removeFirst());
+                break;
+            case SCIENCE:
+                System.out.println(scienceQuestions.removeFirst());
+                break;
+            case SPORTS:
+                System.out.println(sportsQuestions.removeFirst());
+                break;
+            case ROCK:
+                System.out.println(rockQuestions.removeFirst());
+                break;
+        }
     }
 
 
-    private String currentCategory() {
-        if (places[currentPlayer] == 0) return "Pop";
-        if (places[currentPlayer] == 4) return "Pop";
-        if (places[currentPlayer] == 8) return "Pop";
-        if (places[currentPlayer] == 1) return "Science";
-        if (places[currentPlayer] == 5) return "Science";
-        if (places[currentPlayer] == 9) return "Science";
-        if (places[currentPlayer] == 2) return "Sports";
-        if (places[currentPlayer] == 6) return "Sports";
-        if (places[currentPlayer] == 10) return "Sports";
-        return "Rock";
+    private Category currentCategory() {
+        if (places[currentPlayer] == 0) return Category.POP;
+        if (places[currentPlayer] == 4) return Category.POP;
+        if (places[currentPlayer] == 8) return Category.POP;
+        if (places[currentPlayer] == 1) return Category.SCIENCE;
+        if (places[currentPlayer] == 5) return Category.SCIENCE;
+        if (places[currentPlayer] == 9) return Category.SCIENCE;
+        if (places[currentPlayer] == 2) return Category.SPORTS;
+        if (places[currentPlayer] == 6) return Category.SPORTS;
+        if (places[currentPlayer] == 10) return Category.SPORTS;
+        return Category.ROCK;
     }
 
     public boolean wasCorrectlyAnswered() {
