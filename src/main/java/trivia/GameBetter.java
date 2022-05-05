@@ -12,21 +12,62 @@ public class GameBetter implements IGame {
     int[] purses = new int[6];
     boolean[] inPenaltyBox = new boolean[6];
 
-    Deque<String> popQuestions = new LinkedList<>();
-    Deque<String> scienceQuestions = new LinkedList<>();
-    Deque<String> sportsQuestions = new LinkedList<>();
-    Deque<String> rockQuestions = new LinkedList<>();
+    public class Deck {
+        Deque<String> popQuestions = new LinkedList<>();
+        Deque<String> scienceQuestions = new LinkedList<>();
+        Deque<String> sportsQuestions = new LinkedList<>();
+        Deque<String> rockQuestions = new LinkedList<>();
+
+        public Deck() {
+            for (int i = 0; i < 50; i++) {
+                popQuestions.addLast("Pop Question " + i);
+                scienceQuestions.addLast(("Science Question " + i));
+                sportsQuestions.addLast(("Sports Question " + i));
+                rockQuestions.addLast(createRockQuestion(i));
+            }
+        }
+
+        public String getQuestion(Category category) {
+            switch (category) {
+                case POP:
+                    return this.getPopQuestion();
+                case SCIENCE:
+                    return this.getScienceQuestion();
+                case SPORTS:
+                    return this.getSportsQuestion();
+                case ROCK:
+                    return this.getRockQuestion();
+                default:
+                    throw new IllegalArgumentException("No questions for your category :)");
+            }
+        }
+
+        public String getPopQuestion() {
+            return popQuestions.removeFirst();
+        }
+
+        public String getScienceQuestion() {
+            return scienceQuestions.removeFirst();
+        }
+
+        public String getSportsQuestion() {
+            return sportsQuestions.removeFirst();
+        }
+
+        public String getRockQuestion() {
+            return rockQuestions.removeFirst();
+        }
+
+
+    }
+
+    Deck deck;
 
     int currentPlayer = 0;
     boolean isGettingOutOfPenaltyBox;
 
     public GameBetter() {
-        for (int i = 0; i < 50; i++) {
-            popQuestions.addLast("Pop Question " + i);
-            scienceQuestions.addLast(("Science Question " + i));
-            sportsQuestions.addLast(("Sports Question " + i));
-            rockQuestions.addLast(createRockQuestion(i));
-        }
+        deck = new Deck();
     }
 
     public String createRockQuestion(int index) {
@@ -101,20 +142,7 @@ public class GameBetter implements IGame {
     }
 
     private void askQuestion() {
-        switch (currentCategory()) {
-            case POP:
-                System.out.println(popQuestions.removeFirst());
-                break;
-            case SCIENCE:
-                System.out.println(scienceQuestions.removeFirst());
-                break;
-            case SPORTS:
-                System.out.println(sportsQuestions.removeFirst());
-                break;
-            case ROCK:
-                System.out.println(rockQuestions.removeFirst());
-                break;
-        }
+        System.out.println(deck.getQuestion(currentCategory()));
     }
 
 
@@ -155,7 +183,7 @@ public class GameBetter implements IGame {
 
         } else {
 
-            System.out.println("Answer was corrent!!!!");
+            System.out.println("Answer was correct!!!!");
             purses[currentPlayer]++;
             System.out.println(players.get(currentPlayer)
                     + " now has "
