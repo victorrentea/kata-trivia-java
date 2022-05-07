@@ -62,6 +62,11 @@ public class Game implements IGame {
             isGettingOutOfPenaltyBox = true;
 
             System.out.println(players.get(currentPlayer) + " is getting out of the penalty box");
+            //!BUGFIX
+            //if we say the player is getting out of the penalty box
+            //we should actually do it too :)
+            inPenaltyBox[currentPlayer] = false;
+
             places[currentPlayer] = places[currentPlayer] + roll;
             if (places[currentPlayer] > 11) places[currentPlayer] = places[currentPlayer] - 12;
 
