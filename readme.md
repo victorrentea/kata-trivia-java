@@ -1,6 +1,7 @@
 # Trivia Refactoring Kata
 Arranged by Victor Rentea
-Just one of the many coding katas at [kata-log.rocks](https://kata-log.rocks/)
+
+(Just one of the many coding katas at [kata-log.rocks](https://kata-log.rocks/))
 
 ## The problem
 Here is a preview of a game in action.
@@ -25,6 +26,8 @@ This is called the "Golden Master Method", and it was used to build GameTest.
 
 ## The Task
 Your job is to refactor GameBetter.java, continuously running GameTest to make sure you don't break anything.
+
+⚠️ Try to avoid over-engineering: Keep It Short and Simple (💋KISS Principle)
 
 **Do not touch Game.java** unless to fix a bug.
 
