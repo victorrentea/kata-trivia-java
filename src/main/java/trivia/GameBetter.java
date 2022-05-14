@@ -1,6 +1,8 @@
 package trivia;
 
 import java.util.*;
+import java.util.function.Function;
+import java.util.stream.IntStream;
 
 class Deck {
     Deque<String> popQuestions = new LinkedList<>();
@@ -9,31 +11,12 @@ class Deck {
     Deque<String> rockQuestions = new LinkedList<>();
 
     public Deck() {
-        for (int i = 0; i < 50; i++) {
-            popQuestions.addLast("Pop Question " + i);
-            scienceQuestions.addLast(("Science Question " + i));
-            sportsQuestions.addLast(("Sports Question " + i));
-            rockQuestions.addLast(createRockQuestion(i));
-        }
+        IntStream.range(0, 50).forEach(this::generateQuestions);
     }
 
-    public String createRockQuestion(int index) {
-        return "Rock Question " + index;
-    }
 
     public String getQuestion(Category category) {
-        switch (category) {
-            case POP:
-                return this.getPopQuestion();
-            case SCIENCE:
-                return this.getScienceQuestion();
-            case SPORTS:
-                return this.getSportsQuestion();
-            case ROCK:
-                return this.getRockQuestion();
-            default:
-                throw new IllegalArgumentException("No questions for your category :)");
-        }
+        return category.getQuestionFunction().apply(this);
     }
 
     public String getPopQuestion() {
@@ -52,6 +35,12 @@ class Deck {
         return rockQuestions.removeFirst();
     }
 
+    private void generateQuestions(int i) {
+        popQuestions.addLast("Pop Question " + i);
+        scienceQuestions.addLast(("Science Question " + i));
+        sportsQuestions.addLast(("Sports Question " + i));
+        rockQuestions.addLast("Rock Question " + i);
+    }
 
 }
 
@@ -108,7 +97,7 @@ class Player {
 }
 
 class Jail {
-    private List<Player> players = new ArrayList<>();
+    private final List<Player> players = new ArrayList<>();
 
     public void add(Player player) {
         players.add(player);
@@ -130,26 +119,46 @@ class Jail {
 }
 
 enum Category {
-    POP("Pop"),
-    SCIENCE("Science"),
-    SPORTS("Sports"),
-    ROCK("Rock");
-    String name;
+    POP(Deck::getPopQuestion, "Pop", Arrays.asList(0, 4, 8)),
 
-    Category(String name) {
+    SCIENCE(Deck::getScienceQuestion, "Science", Arrays.asList(1, 5, 9)),
+
+    SPORTS(Deck::getSportsQuestion, "Sports", Arrays.asList(2, 6, 10)),
+
+    ROCK(Deck::getRockQuestion, "Rock", Arrays.asList(11, 12));
+
+    private final Function<Deck, String> questionFunction;
+
+    String name;
+    List<Integer> positions;
+
+    Category(Function<Deck, String> questionFunction, String name, List<Integer> positions) {
+        this.questionFunction = questionFunction;
         this.name = name;
+        this.positions = positions;
     }
 
     public String getName() {
         return name;
     }
+
+    public static Category getCategory(int i) {
+        for (Category val : values())
+            if (val.positions.contains(i))
+                return val;
+        return ROCK;
+    }
+
+    public Function<Deck, String> getQuestionFunction() {
+        return questionFunction;
+    }
 }
 
-class Place {
+class Position {
     Category category;
     int no;
 
-    public Place(Category category, int no) {
+    public Position(Category category, int no) {
         this.category = category;
         this.no = no;
     }
@@ -165,56 +174,44 @@ class Place {
 
 class Board {
     private static final int BOARD_POSITION_NO = 12;
-    List<Place> places;
-    Map<Player, Place> playersPositions;
+    List<Position> places;
+    Map<Player, Position> playersPositions;
 
     public Board() {
         places = new ArrayList<>();
         playersPositions = new HashMap<>();
         for (int i = 0; i < BOARD_POSITION_NO; i++) {
-            places.add(i, new Place(getCategory(i), i));
+            places.add(i, new Position(Category.getCategory(i), i));
         }
     }
 
     public void movePlayerBy(Player player, int roll) {
-        final Place currentPlace = playersPositions.get(player);
+        final Position currentPlace = playersPositions.get(player);
         final int futurePosition = currentPlace.getNo() + roll;
         playersPositions.put(player, places.get(futurePosition % BOARD_POSITION_NO));
     }
 
-    public Place getPlayerPosition(Player player) {
+    public Position getPlayerPosition(Player player) {
         return playersPositions.get(player);
     }
 
     public void addPlayer(Player player) {
-        playersPositions.put(player, new Place(getCategory(0), 0));
+        playersPositions.put(player, new Position(Category.getCategory(0), 0));
     }
 
-    private Category getCategory(int i) {
-        if (i == 0) return Category.POP;
-        if (i == 4) return Category.POP;
-        if (i == 8) return Category.POP;
-        if (i == 1) return Category.SCIENCE;
-        if (i == 5) return Category.SCIENCE;
-        if (i == 9) return Category.SCIENCE;
-        if (i == 2) return Category.SPORTS;
-        if (i == 6) return Category.SPORTS;
-        if (i == 10) return Category.SPORTS;
-        return Category.ROCK;
-    }
+
 }
 
 // REFACTOR ME
 public class GameBetter implements IGame {
     private static final int WINNING_COIN_NO = 6;
 
-    Deque<Player> players = new LinkedList<>();
+    private final Deque<Player> players = new LinkedList<>();
 
-    Deck deck;
-    Jail jail;
-    Board board;
-    Player currentPlayer;
-//    boolean isGettingOutOfPenaltyBox;
+    private final Deck deck;
+    private final Jail jail;
+    private final Board board;
+    private Player currentPlayer;
 
     public GameBetter() {
         deck = new Deck();
@@ -241,35 +238,27 @@ public class GameBetter implements IGame {
         System.out.println(currentPlayer + " is the current player");
         System.out.println("They have rolled a " + roll);
 
-        if (jail.isJailed(currentPlayer)) {
-            if (roll % 2 == 0) {
-                System.out.println(currentPlayer.getName() + " is not getting out of the penalty box");
-//                isGettingOutOfPenaltyBox = false;
-            } else {
-//                isGettingOutOfPenaltyBox = true;
-                jail.release(currentPlayer);
-                System.out.println(currentPlayer.getName() + " is getting out of the penalty box");
-                moveCurrentPlayer(roll);
-            }
-
-        } else {
+        if (!jail.isJailed(currentPlayer)) {
             moveCurrentPlayer(roll);
+            return;
         }
+        if (roll % 2 == 0) {
+            System.out.println(currentPlayer.getName() + " is not getting out of the penalty box");
+            return;
+        }
+
+        jail.release(currentPlayer);
+        System.out.println(currentPlayer.getName() + " is getting out of the penalty box");
+        moveCurrentPlayer(roll);
 
     }
 
     public boolean wasCorrectlyAnswered() {
-        boolean isWinner;
         if (jail.isJailed(currentPlayer)) {
-//                isWinner = handleCorrectAnswer();
-//            } else {
-                isWinner = true;
-//            }
-        } else {
-            isWinner = handleCorrectAnswer();
+            nextPlayer();
+            return true;
         }
-        nextPlayer();
-        return isWinner;
+        return handleCorrectAnswer();
     }
 
     public boolean wrongAnswer() {
@@ -287,7 +276,9 @@ public class GameBetter implements IGame {
                 + " now has "
                 + currentPlayer.getPurse().getCoins()
                 + " Gold Coins.");
-        return didPlayerWin();
+        final boolean result = didPlayerWin();
+        nextPlayer();
+        return result;
     }
 
     private void nextPlayer() {
@@ -298,7 +289,6 @@ public class GameBetter implements IGame {
 
     private void moveCurrentPlayer(int roll) {
         board.movePlayerBy(currentPlayer, roll);
-
         System.out.println(currentPlayer.getName()
                 + "'s new location is "
                 + board.getPlayerPosition(currentPlayer).getNo());
