@@ -44,6 +44,7 @@ class Deck {
 
 }
 
+
 class Purse {
     private int coins;
 
@@ -216,6 +217,7 @@ public class GameBetter implements IGame {
         deck = new Deck();
         jail = new Jail();
         board = new Board();
+
     }
 
 
@@ -230,31 +232,28 @@ public class GameBetter implements IGame {
         return true;
     }
 
+    //Can't figure out how to further reduce complexity of this
+    //without just moving it to another class
     public void roll(int roll) {
-//        if (getCurrentPlayer() == null)
-//            nextPlayer();
+        final Player currentPlayer = getCurrentPlayer();
 
-        System.out.println(getCurrentPlayer() + " is the current player");
+        System.out.println(currentPlayer + " is the current player");
         System.out.println("They have rolled a " + roll);
 
-        if (!jail.isJailed(getCurrentPlayer())) {
-            moveCurrentPlayer(roll);
-            return;
-        }
-        if (roll % 2 == 0) {
-            System.out.println(getCurrentPlayer().getName() + " is not getting out of the penalty box");
-            return;
+
+        if (jail.isJailed(currentPlayer)) {
+            if (roll % 2 == 0) {
+                System.out.println(currentPlayer.getName() + " is not getting out of the penalty box");
+                return;
+            }
+            jail.release(currentPlayer);
+            System.out.println(currentPlayer.getName() + " is getting out of the penalty box");
         }
 
-        jail.release(getCurrentPlayer());
-        System.out.println(getCurrentPlayer().getName() + " is getting out of the penalty box");
         moveCurrentPlayer(roll);
 
     }
 
-    private Player getCurrentPlayer() {
-        return players.peekFirst();
-    }
 
     public boolean wasCorrectlyAnswered() {
         if (jail.isJailed(getCurrentPlayer())) {
@@ -265,19 +264,22 @@ public class GameBetter implements IGame {
     }
 
     public boolean wrongAnswer() {
+        final Player currentPlayer = getCurrentPlayer();
         System.out.println("Question was incorrectly answered");
-        System.out.println(getCurrentPlayer().getName() + " was sent to the penalty box");
-        jail.toJail(getCurrentPlayer());
+        System.out.println(currentPlayer.getName() + " was sent to the penalty box");
+        jail.toJail(currentPlayer);
         nextPlayer();
         return true;
     }
 
     private boolean handleCorrectAnswer() {
+        final Player currentPlayer = getCurrentPlayer();
+
         System.out.println("Answer was correct!!!!");
-        getCurrentPlayer().awardCoin();
-        System.out.println(getCurrentPlayer().getName()
+        currentPlayer.awardCoin();
+        System.out.println(currentPlayer.getName()
                 + " now has "
-                + getCurrentPlayer().getPurse().getCoins()
+                + currentPlayer.getPurse().getCoins()
                 + " Gold Coins.");
         final boolean result = didPlayerWin();
         nextPlayer();
@@ -290,10 +292,11 @@ public class GameBetter implements IGame {
     }
 
     private void moveCurrentPlayer(int roll) {
-        board.movePlayerBy(getCurrentPlayer(), roll);
-        System.out.println(getCurrentPlayer().getName()
+        final Player currentPlayer = getCurrentPlayer();
+        board.movePlayerBy(currentPlayer, roll);
+        System.out.println(currentPlayer.getName()
                 + "'s new location is "
-                + board.getPlayerPosition(getCurrentPlayer()).getNo());
+                + board.getPlayerPosition(currentPlayer).getNo());
         System.out.println("The category is " + currentCategory().getName());
         askQuestion();
     }
@@ -310,4 +313,7 @@ public class GameBetter implements IGame {
         return getCurrentPlayer().getPurse().getCoins() != WINNING_COIN_NO;
     }
 
+    private Player getCurrentPlayer() {
+        return players.peekFirst();
+    }
 }
