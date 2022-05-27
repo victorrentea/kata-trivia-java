@@ -39,27 +39,30 @@ class Player {
         this.inPenaltyBox = inPenaltyBox;
     }
 
-    public void setPlace(int place) {
-        this.place = place;
+    void move(int roll) {
+        place += roll;
+        if (place >= Game.BOARD_SIZE) {
+            place -= Game.BOARD_SIZE;
+        }
     }
 }
 
 // TODO refactor me
 public class Game implements IGame {
     private static final int MAX_PLAYERS = 6;
-    private static final int BOARD_SIZE = 12;
+    public static final int BOARD_SIZE = 12;
 
     private final List<Player> players = new ArrayList<>();
-    private final int[] places = new int[MAX_PLAYERS];
-    private final int[] coins = new int[MAX_PLAYERS];
-    private final boolean[] inPenaltyBox = new boolean[MAX_PLAYERS];
+    private final int[] coins = new int[MAX_PLAYERS]; // TODO victorrentea 27.05.2022: mutat in player
+    private final boolean[] inPenaltyBox = new boolean[MAX_PLAYERS]; // TODO victorrentea 27.05.2022: mutat in player
 
+    // TODO victorrentea 27.05.2022: map mai jos Map<QuestionCategory, List<Question>>
     private final List<String> popQuestions = new ArrayList<>();
     private final List<String> scienceQuestions = new ArrayList<>();
     private final List<String> sportsQuestions = new ArrayList<>();
     private final List<String> rockQuestions = new ArrayList<>();
-
-    private int currentPlayer;
+    // TODO victorrentea 27.05.2022: QuestionDecks (mapa de mai sus)
+    private int currentPlayerIndex;
     private boolean isGettingOutOfPenaltyBox;
 
     public Game() {
@@ -78,48 +81,44 @@ public class Game implements IGame {
     }
 
     public void roll(int roll) {
-        System.out.println(players.get(currentPlayer).getName() + " is the current player");
+        System.out.println(currentPlayer().getName() + " is the current player");
         System.out.println("They have rolled a " + roll);
 
-        if (inPenaltyBox[currentPlayer]) {
+        if (inPenaltyBox[currentPlayerIndex]) { // TODO victorrentea 27.05.2022: extract rollInPenalty
             if (roll % 2 != 0) {
                 isGettingOutOfPenaltyBox = true;
 
-                System.out.println(players.get(currentPlayer).getName() + " is getting out of the penalty box");
-                movePlayer(roll);
+                System.out.println(currentPlayer().getName() + " is getting out of the penalty box");
+                currentPlayer().move(roll);
 
 
-                System.out.println(players.get(currentPlayer).getName()
+                System.out.println(currentPlayer().getName()
                                    + "'s new location is "
-                                   + places[currentPlayer]);
+                                   + currentPlayer().getPlace());
                 System.out.println("The category is " + currentCategory().getLabel());
                 System.out.println(getQuestion());
             } else {
-                System.out.println(players.get(currentPlayer).getName() + " is not getting out of the penalty box");
+                System.out.println(currentPlayer().getName() + " is not getting out of the penalty box");
                 isGettingOutOfPenaltyBox = false;
             }
 
-        } else {
+        } else { // TODO victorrentea 27.05.2022: regularRoll
+            currentPlayer().move(roll);
 
-            movePlayer(roll);
-
-            System.out.println(players.get(currentPlayer).getName()
+            System.out.println(currentPlayer().getName()
                                + "'s new location is "
-                               + places[currentPlayer]);
+                               + currentPlayer().getPlace());
             System.out.println("The category is " + currentCategory().getLabel());
             System.out.println(getQuestion());
         }
 
     }
 
-    private void movePlayer(int roll) {
-        places[currentPlayer] += roll;
-        if (places[currentPlayer] >= BOARD_SIZE) {
-            places[currentPlayer] -= BOARD_SIZE;
-        }
+    private Player currentPlayer() {
+        return players.get(currentPlayerIndex);
     }
 
-    private String getQuestion() {
+    private String getQuestion() { // move in QuestionDecks
         return switch (currentCategory()) {
             case POP -> popQuestions.remove(0);
             case SCIENCE -> scienceQuestions.remove(0);
@@ -129,7 +128,7 @@ public class Game implements IGame {
     }
 
     private QuestionCategory currentCategory() {
-        int questionIndex = places[currentPlayer] % values().length;
+        int questionIndex = currentPlayer().getPlace() % values().length;
         return switch (questionIndex) {
             case 0 -> POP;
             case 1 -> SCIENCE;
@@ -139,39 +138,42 @@ public class Game implements IGame {
     }
 
     public boolean wasCorrectlyAnswered() {
-        if (inPenaltyBox[currentPlayer]) {
+        if (inPenaltyBox[currentPlayerIndex]) {
             if (isGettingOutOfPenaltyBox) {
                 System.out.println("Answer was correct!!!!");
-                coins[currentPlayer]++;
-                System.out.println(players.get(currentPlayer).getName()
+                coins[currentPlayerIndex]++; // TODO victorrentea 27.05.2022: player.addCoin
+                System.out.println(currentPlayer().getName()
                                    + " now has "
-                                   + coins[currentPlayer]
+                                   + coins[currentPlayerIndex]
                                    + " Gold Coins.");
 
                 boolean winner = didPlayerWin();
-                currentPlayer++;
-                if (currentPlayer == players.size()) currentPlayer = 0;
+                // TODO victorrentea 27.05.2022: DRY violation:
+                currentPlayerIndex++;
+                if (currentPlayerIndex == players.size()) currentPlayerIndex = 0;
 
                 return winner;
             } else {
-                currentPlayer++;
-                if (currentPlayer == players.size()) currentPlayer = 0;
+                currentPlayerIndex++;
+                if (currentPlayerIndex == players.size()) currentPlayerIndex = 0;
                 return true;
             }
 
 
         } else {
 
+            // GASESTI OARE BUGUL de business mai jos?. Daca da, esti tare:
             System.out.println("Answer was corrent!!!!");
-            coins[currentPlayer]++;
-            System.out.println(players.get(currentPlayer).getName()
+            coins[currentPlayerIndex]++;
+            System.out.println(currentPlayer().getName()
                                + " now has "
-                               + coins[currentPlayer]
+                               + coins[currentPlayerIndex]
                                + " Gold Coins.");
 
             boolean winner = didPlayerWin();
-            currentPlayer++;
-            if (currentPlayer == players.size()) currentPlayer = 0;
+            // iarasi si iarasi si iarasi
+            currentPlayerIndex++;
+            if (currentPlayerIndex == players.size()) currentPlayerIndex = 0;
 
             return winner;
         }
@@ -179,16 +181,18 @@ public class Game implements IGame {
 
     public boolean wrongAnswer() {
         System.out.println("Question was incorrectly answered");
-        System.out.println(players.get(currentPlayer).getName() + " was sent to the penalty box");
-        inPenaltyBox[currentPlayer] = true;
+        System.out.println(currentPlayer().getName() + " was sent to the penalty box");
+        inPenaltyBox[currentPlayerIndex] = true;
 
-        currentPlayer++;
-        if (currentPlayer == players.size()) currentPlayer = 0;
+        // si-ncodata m ai flacai
+        currentPlayerIndex++;
+        if (currentPlayerIndex == players.size()) currentPlayerIndex = 0;
         return true;
     }
 
+    // minciuna in cod: nume misleading
     private boolean didPlayerWin() {
-        return !(coins[currentPlayer] == 6);
+        return !(coins[currentPlayerIndex] == 6);
     }
 
 
