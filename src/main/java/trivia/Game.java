@@ -3,14 +3,15 @@ package trivia;
 import java.util.ArrayList;
 import java.util.List;
 
-import static trivia.Game.QuestionCategory.*;
+import static trivia.QuestionCategory.*;
 
 
 // TODO refactor me
 public class Game implements IGame {
-    public static final int MAX_PLAYERS = 6;
-    public static final int BOARD_SIZE = 12;
-    private final ArrayList<String> players = new ArrayList<>();
+    private static final int MAX_PLAYERS = 6;
+    private static final int BOARD_SIZE = 12;
+    
+    private final List<String> players = new ArrayList<>();
     private final int[] places = new int[MAX_PLAYERS];
     private final int[] purses = new int[MAX_PLAYERS];
     private final boolean[] inPenaltyBox = new boolean[MAX_PLAYERS];
@@ -56,7 +57,7 @@ public class Game implements IGame {
                                    + "'s new location is "
                                    + places[currentPlayer]);
                 System.out.println("The category is " + currentCategory().getLabel());
-                System.out.println(askQuestion());
+                System.out.println(getQuestion());
             } else {
                 System.out.println(players.get(currentPlayer) + " is not getting out of the penalty box");
                 isGettingOutOfPenaltyBox = false;
@@ -70,18 +71,19 @@ public class Game implements IGame {
                                + "'s new location is "
                                + places[currentPlayer]);
             System.out.println("The category is " + currentCategory().getLabel());
-            System.out.println(askQuestion());
+            System.out.println(getQuestion());
         }
 
     }
 
     private void movePlayer(int roll) {
-        places[currentPlayer] += roll;        if (places[currentPlayer] >= BOARD_SIZE) {
+        places[currentPlayer] += roll;
+        if (places[currentPlayer] >= BOARD_SIZE) {
             places[currentPlayer] -= BOARD_SIZE;
         }
     }
 
-    private String askQuestion() {
+    private String getQuestion() {
         return switch (currentCategory()) {
             case POP -> popQuestions.remove(0);
             case SCIENCE -> scienceQuestions.remove(0);
@@ -154,21 +156,5 @@ public class Game implements IGame {
     }
 
 
-    enum QuestionCategory {
-        POP("Pop"),
-        SCIENCE("Science"),
-        SPORTS("Sports"),
-        ROCK("Rock"),
-        ;
 
-        private final String label;
-
-        QuestionCategory(String label) {
-            this.label = label;
-        }
-
-        public String getLabel() {
-            return label;
-        }
-    }
 }
