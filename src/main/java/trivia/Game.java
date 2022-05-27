@@ -5,15 +5,53 @@ import java.util.List;
 
 import static trivia.QuestionCategory.*;
 
+class Player {
+    private final String name;
+    private int place;
+    private int coins;
+    private boolean inPenaltyBox;
+
+    public Player(String name) {
+        this.name = name;
+    }
+
+    public String getName() {
+        return name;
+    }
+
+    public int getCoins() {
+        return coins;
+    }
+
+    public int getPlace() {
+        return place;
+    }
+
+    public boolean isInPenaltyBox() {
+        return inPenaltyBox;
+    }
+
+    public void setCoins(int coins) {
+        this.coins = coins;
+    }
+
+    public void setInPenaltyBox(boolean inPenaltyBox) {
+        this.inPenaltyBox = inPenaltyBox;
+    }
+
+    public void setPlace(int place) {
+        this.place = place;
+    }
+}
 
 // TODO refactor me
 public class Game implements IGame {
     private static final int MAX_PLAYERS = 6;
     private static final int BOARD_SIZE = 12;
-    
+
     private final List<String> players = new ArrayList<>();
     private final int[] places = new int[MAX_PLAYERS];
-    private final int[] purses = new int[MAX_PLAYERS];
+    private final int[] coins = new int[MAX_PLAYERS];
     private final boolean[] inPenaltyBox = new boolean[MAX_PLAYERS];
 
     private final List<String> popQuestions = new ArrayList<>();
@@ -106,10 +144,10 @@ public class Game implements IGame {
         if (inPenaltyBox[currentPlayer]) {
             if (isGettingOutOfPenaltyBox) {
                 System.out.println("Answer was correct!!!!");
-                purses[currentPlayer]++;
+                coins[currentPlayer]++;
                 System.out.println(players.get(currentPlayer)
                                    + " now has "
-                                   + purses[currentPlayer]
+                                   + coins[currentPlayer]
                                    + " Gold Coins.");
 
                 boolean winner = didPlayerWin();
@@ -127,10 +165,10 @@ public class Game implements IGame {
         } else {
 
             System.out.println("Answer was corrent!!!!");
-            purses[currentPlayer]++;
+            coins[currentPlayer]++;
             System.out.println(players.get(currentPlayer)
                                + " now has "
-                               + purses[currentPlayer]
+                               + coins[currentPlayer]
                                + " Gold Coins.");
 
             boolean winner = didPlayerWin();
@@ -152,9 +190,8 @@ public class Game implements IGame {
     }
 
     private boolean didPlayerWin() {
-        return !(purses[currentPlayer] == 6);
+        return !(coins[currentPlayer] == 6);
     }
-
 
 
 }
