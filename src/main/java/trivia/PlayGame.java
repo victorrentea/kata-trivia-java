@@ -3,7 +3,8 @@ package trivia;
 import java.util.Random;
 import java.util.Scanner;
 
-// DON'T TOUCH THIS CLASS. ONLY RUN IT TO MANUALLY PLAY THE GAME YOURSELF TO UNDERSTAND THE PROBLEM
+// DON'T TOUCH THIS CLASS. DON'T REFACTOR THIS CLASS.
+// ONLY RUN IT TO MANUALLY PLAY THE GAME YOURSELF TO UNDERSTAND THE PROBLEM
 public class PlayGame {
 
    private static final Scanner scanner = new Scanner(System.in);
