@@ -1,6 +1,5 @@
 package trivia;
 
-import main.java.trivia.cr.GeographySubject;
 
 public class SubjectFactory implements Constants {
 

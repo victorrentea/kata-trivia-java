@@ -1,8 +1,8 @@
-package trivia.cr;
+package trivia;
+
+import trivia.Subject;
 
 import java.util.Arrays;
-
-import main.java.trivia.Subject;
 
 public class GeographySubject extends Subject {
 	

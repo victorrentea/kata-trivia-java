@@ -6,8 +6,10 @@ public class Player implements Constants {
 	private int position;
 	private int purse;
 	private boolean isInPenaltyBox;
+
 	private boolean isOnStreak;
 	private int consecutiveCorrectAnswers;
+
 	private boolean isGettingOutOfPenaltyBox;
 	private boolean hadSecondChance;
 
