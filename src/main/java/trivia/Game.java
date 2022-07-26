@@ -1,4 +1,4 @@
-package trivia;
+package main.java.trivia;
 
 import java.util.ArrayList;
 import java.util.LinkedList;
@@ -70,6 +70,7 @@ public class Game implements IGame {
                                + places[currentPlayer]);
             System.out.println("The category is " + currentCategory());
             askQuestion();
+            inPenaltyBox[currentPlayer] = false;
          } else {
             System.out.println(players.get(currentPlayer) + " is not getting out of the penalty box");
             isGettingOutOfPenaltyBox = false;
@@ -138,7 +139,7 @@ public class Game implements IGame {
 
       } else {
 
-         System.out.println("Answer was corrent!!!!");
+         System.out.println("Answer was correct!!!!");
          purses[currentPlayer]++;
          System.out.println(players.get(currentPlayer)
                             + " now has "

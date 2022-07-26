@@ -1,8 +1,12 @@
 
-package trivia;
+package test.java.trivia;
 
 import org.junit.Ignore;
 import org.junit.Test;
+
+import main.java.trivia.Game;
+import main.java.trivia.GameBetter;
+import main.java.trivia.IGame;
 
 import java.io.ByteArrayOutputStream;
 import java.io.PrintStream;
