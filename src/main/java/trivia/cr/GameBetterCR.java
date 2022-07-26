@@ -1,4 +1,4 @@
-package main.java.trivia.cr;
+package trivia.cr;
 
 import main.java.trivia.GameBetter;
 import main.java.trivia.SubjectFactory;
