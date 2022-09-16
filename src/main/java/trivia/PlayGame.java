@@ -1,4 +1,4 @@
-package main.java.trivia;
+package trivia;
 
 import java.util.Random;
 import java.util.Scanner;
