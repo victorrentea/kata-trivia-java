@@ -1,4 +1,4 @@
-package trivia;
+package main.java.trivia;
 
 import main.java.trivia.cr.GeographySubject;
 

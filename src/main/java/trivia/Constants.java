@@ -1,4 +1,4 @@
-package trivia;
+package main.java.trivia;
 
 public interface Constants {
 

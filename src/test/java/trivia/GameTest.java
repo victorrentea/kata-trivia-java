@@ -1,5 +1,5 @@
 
-package trivia;
+package test.java.trivia;
 
 import org.junit.Ignore;
 import org.junit.Test;

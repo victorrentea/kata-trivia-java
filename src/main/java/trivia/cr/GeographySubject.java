@@ -1,4 +1,4 @@
-package trivia.cr;
+package main.java.trivia.cr;
 
 import java.util.Arrays;
 

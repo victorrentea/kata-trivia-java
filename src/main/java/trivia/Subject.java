@@ -1,4 +1,4 @@
-package trivia;
+package main.java.trivia;
 
 import java.util.LinkedList;
 import java.util.List;
