@@ -1,8 +1,7 @@
 package trivia.cr;
 
-
-import trivia.GameBetter;
-import trivia.SubjectFactory;
+import main.java.trivia.GameBetter;
+import main.java.trivia.SubjectFactory;
 
 public class GameBetterCR extends GameBetter {
 

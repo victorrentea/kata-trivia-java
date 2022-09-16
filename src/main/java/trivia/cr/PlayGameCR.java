@@ -1,11 +1,10 @@
 package trivia.cr;
 
-import trivia.Constants;
-import trivia.IGame;
-
 import java.util.Random;
 import java.util.Scanner;
 
+import main.java.trivia.Constants;
+import main.java.trivia.IGame;
 
 public class PlayGameCR {
 	
