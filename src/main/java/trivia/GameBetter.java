@@ -23,15 +23,15 @@ public class GameBetter implements IGame {
 
    public GameBetter() {
       for (int i = 0; i < 50; i++) {
-         popQuestions.addLast("Pop Question " + i);
-         scienceQuestions.addLast(("Science Question " + i));
-         sportsQuestions.addLast(("Sports Question " + i));
+         popQuestions.addLast(String.format("%s Question %d", Category.POP, i));
+         scienceQuestions.addLast(String.format("%s Question %d", Category.SCIENCE, i));
+         sportsQuestions.addLast(String.format("%s Question %d", Category.SPORTS, i));
          rockQuestions.addLast(createRockQuestion(i));
       }
    }
 
    public String createRockQuestion(int index) {
-      return "Rock Question " + index;
+      return String.format("%s Question %d", Category.ROCK, index);
    }
 
    public boolean isPlayable() {
@@ -91,13 +91,13 @@ public class GameBetter implements IGame {
 
    private void askQuestion() {
 
-      if (Objects.equals(currentCategory(), "Pop"))
+      if (Objects.equals(currentCategory(), Category.POP.toString()))
          System.out.println(popQuestions.removeFirst());
-      if (Objects.equals(currentCategory(), "Science"))
+      if (Objects.equals(currentCategory(), Category.SCIENCE.toString()))
          System.out.println(scienceQuestions.removeFirst());
-      if (Objects.equals(currentCategory(), "Sports"))
+      if (Objects.equals(currentCategory(), Category.SPORTS.toString()))
          System.out.println(sportsQuestions.removeFirst());
-      if (Objects.equals(currentCategory(), "Rock"))
+      if (Objects.equals(currentCategory(), Category.ROCK.toString()))
          System.out.println(rockQuestions.removeFirst());
    }
 
@@ -114,7 +114,7 @@ public class GameBetter implements IGame {
       if (places[currentPlayer] == 2) return Category.SPORTS.toString();
       if (places[currentPlayer] == 6) return Category.SPORTS.toString();
       if (places[currentPlayer] == 10) return Category.SPORTS.toString();
-      return String.valueOf(Category.ROCK);
+      return Category.ROCK.toString();
    }
 
    public boolean wasCorrectlyAnswered() {
