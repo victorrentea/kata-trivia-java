@@ -2,38 +2,40 @@ package trivia;
 
 import trivia.objects.Category;
 
-import java.util.ArrayList;
-import java.util.LinkedList;
-import java.util.Objects;
+import java.util.*;
 
 // REFACTOR ME
 public class GameBetter implements IGame {
-   private final String QUESTION_BASE_FORMAT = "%s Question %d";
 
    ArrayList<String> players = new ArrayList<>();
    int[] places = new int[6];
    int[] purses = new int[6];
    boolean[] inPenaltyBox = new boolean[6];
 
-   LinkedList<String> popQuestions = new LinkedList<>();
-   LinkedList<String> scienceQuestions = new LinkedList<>();
-   LinkedList<String> sportsQuestions = new LinkedList<>();
-   LinkedList<String> rockQuestions = new LinkedList<>();
+   private final Map<Category, LinkedList<String>> questions = new HashMap<>() {{
+      put(Category.POP, new LinkedList<>());
+      put(Category.SCIENCE, new LinkedList<>());
+      put(Category.SPORTS, new LinkedList<>());
+      put(Category.ROCK, new LinkedList<>());
+
+   }};
 
    int currentPlayer = 0;
    boolean isGettingOutOfPenaltyBox;
 
    public GameBetter() {
-      for (int i = 0; i < 50; i++) {
-         popQuestions.addLast(String.format(QUESTION_BASE_FORMAT, Category.POP, i));
-         scienceQuestions.addLast(String.format(QUESTION_BASE_FORMAT, Category.SCIENCE, i));
-         sportsQuestions.addLast(String.format(QUESTION_BASE_FORMAT, Category.SPORTS, i));
-         rockQuestions.addLast(createRockQuestion(i));
+      for (int index = 0; index < 50; index++) {
+         for (Category category : Category.values()) {
+            LinkedList<String> questionList = this.questions.get(category);
+            questionList.addLast(buildQuestion(category, index));
+         }
+
       }
    }
 
-   public String createRockQuestion(int index) {
-      return String.format(QUESTION_BASE_FORMAT, Category.ROCK, index);
+   public String buildQuestion(Category category, int index) {
+      String QUESTION_BASE_FORMAT = "%s Question %d";
+      return String.format(QUESTION_BASE_FORMAT, category, index);
    }
 
    public boolean isPlayable() {
@@ -94,13 +96,13 @@ public class GameBetter implements IGame {
    private void askQuestion() {
 
       if (Objects.equals(currentCategory(), Category.POP.toString()))
-         System.out.println(popQuestions.removeFirst());
+         System.out.println(this.questions.get(Category.POP).removeFirst());
       if (Objects.equals(currentCategory(), Category.SCIENCE.toString()))
-         System.out.println(scienceQuestions.removeFirst());
+         System.out.println(this.questions.get(Category.SCIENCE).removeFirst());
       if (Objects.equals(currentCategory(), Category.SPORTS.toString()))
-         System.out.println(sportsQuestions.removeFirst());
+         System.out.println(this.questions.get(Category.SPORTS).removeFirst());
       if (Objects.equals(currentCategory(), Category.ROCK.toString()))
-         System.out.println(rockQuestions.removeFirst());
+         System.out.println(this.questions.get(Category.ROCK).removeFirst());
    }
 
 
