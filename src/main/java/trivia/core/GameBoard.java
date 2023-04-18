@@ -1,6 +1,7 @@
 package trivia.core;
 
 import trivia.objects.Category;
+import trivia.objects.Player;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -9,27 +10,39 @@ import java.util.stream.IntStream;
 
 public class GameBoard {
     private final Map<Integer, Category> boardCategoryMap = new HashMap<>();
-    private final int[] playerPositions = new int[GameConfig.PLAYER_MAX_COUNT];
 
     public int boardSize = 0;
     public int totalPlayers = 0;
+    public final Map<Integer, Player> players = new HashMap<>();
 
     public GameBoard() {
         buildBoard();
     }
 
-    public void addPlayer(String playerName) {
+    public boolean addPlayer(String playerName) {
+        this.players.put(this.totalPlayers, new Player(playerName));
+        this.totalPlayers ++;
 
         System.out.println(playerName + " was added");
+        System.out.println("They are player number " + this.totalPlayers);
+        return true;
     }
 
-    public int getPlayerCurrentPosition(int playerIndex) {
-        return this.playerPositions[playerIndex];
+    public int getPlayerPosition(int playerIndex) {
+        return this.players.get(playerIndex).position;
+    }
+
+    public String getPlayerName(int playerIndex) {
+        return this.players.get(playerIndex).name;
     }
 
     public void updatePlayerPosition(int playerIndex, int playerMovement) {
-        this.playerPositions[playerIndex] = this.playerPositions[playerIndex] + playerMovement;
-        if (this.playerPositions[playerIndex] > 11) this.playerPositions[playerIndex] = this.playerPositions[playerIndex] - 12;
+        Player player = this.players.get(playerIndex);
+        int newPosition = player.position + playerMovement;
+
+        if (newPosition > 11) newPosition -= 12;  // todo: clamp here
+        player.position = newPosition;
+
     }
 
     public Category getBoardCategoryByIndex(int index) {
@@ -47,4 +60,6 @@ public class GameBoard {
             }
         });
     }
+
+
 }
