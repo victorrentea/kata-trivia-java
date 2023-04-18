@@ -11,7 +11,6 @@ import java.util.stream.IntStream;
 public class GameBetter implements IGame {
    private final GameBoard board;
    int[] purses = new int[6];
-   boolean[] inPenaltyBox = new boolean[6];
 
    private final Map<Category, LinkedList<String>> questions = new HashMap<>();
 
@@ -24,7 +23,7 @@ public class GameBetter implements IGame {
    }
 
    public boolean wasCorrectlyAnswered() {
-      if (inPenaltyBox[currentPlayer]) {
+      if (this.board.isInPenalty(currentPlayer)) {
          if (isGettingOutOfPenaltyBox) {
             System.out.println("Answer was correct!!!!");
             purses[currentPlayer]++;
@@ -65,7 +64,7 @@ public class GameBetter implements IGame {
    public boolean wrongAnswer() {
       System.out.println("Question was incorrectly answered");
       System.out.println(this.board.getPlayerName(currentPlayer) + " was sent to the penalty box");
-      inPenaltyBox[currentPlayer] = true;
+      this.board.setPenalty(currentPlayer, true);
 
       currentPlayer++;
       if (currentPlayer == this.board.totalPlayers) currentPlayer = 0;
@@ -80,7 +79,7 @@ public class GameBetter implements IGame {
       System.out.println(this.board.getPlayerName(currentPlayer) + " is the current player");
       System.out.println("They have rolled a " + roll);
 
-      if (inPenaltyBox[currentPlayer]) {
+      if (this.board.isInPenalty(currentPlayer)) {
          if (roll % 2 != 0) {
             isGettingOutOfPenaltyBox = true;
 

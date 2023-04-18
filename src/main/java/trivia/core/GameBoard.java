@@ -36,12 +36,19 @@ public class GameBoard {
         return this.players.get(playerIndex).name;
     }
 
+    public boolean isInPenalty(int playerIndex) {
+        return this.players.get(playerIndex).hasPenalty;
+    }
+
+    public void setPenalty(int playerIndex, boolean value) {
+        this.players.get(playerIndex).hasPenalty = value;
+    }
+
+
     public void updatePlayerPosition(int playerIndex, int playerMovement) {
         Player player = this.players.get(playerIndex);
-        int newPosition = player.position + playerMovement;
 
-        if (newPosition > 11) newPosition -= 12;  // todo: clamp here
-        player.position = newPosition;
+        player.position = this.resetPlayerPositionOnBoardRound(player.position + playerMovement);
 
     }
 
@@ -59,6 +66,11 @@ public class GameBoard {
                 this.boardCategoryMap.put(boardIndex.getAndIncrement(), category);
             }
         });
+    }
+
+    private int resetPlayerPositionOnBoardRound(int position) {
+        if (position > this.boardSize - 1) position -=  this.boardSize;
+        return position;
     }
 
 
