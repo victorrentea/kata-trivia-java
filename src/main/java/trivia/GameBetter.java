@@ -15,13 +15,7 @@ public class GameBetter implements IGame {
    int[] purses = new int[6];
    boolean[] inPenaltyBox = new boolean[6];
 
-   private final Map<Category, LinkedList<String>> questions = new HashMap<>() {{
-      put(Category.POP, new LinkedList<>());
-      put(Category.SCIENCE, new LinkedList<>());
-      put(Category.SPORTS, new LinkedList<>());
-      put(Category.ROCK, new LinkedList<>());
-
-   }};
+   private final Map<Category, LinkedList<String>> questions = new HashMap<>();
 
    int currentPlayer = 0;
    boolean isGettingOutOfPenaltyBox;
@@ -32,12 +26,14 @@ public class GameBetter implements IGame {
    }
 
    private void buildQuestionnaire() {
-      IntStream.range(0, GameConfig.TOTAL_QUESTIONS).forEachOrdered(index -> {
-         for (Category category : Category.values()) {
-            LinkedList<String> questionList = this.questions.get(category);
+      for (Category category : Category.values()) {
+         LinkedList<String> questionList = new LinkedList<>();
+         IntStream.range(0, GameConfig.TOTAL_QUESTIONS).forEachOrdered(index -> {
             questionList.addLast(buildQuestion(category, index));
-         }
-      });
+         });
+         this.questions.put(category, questionList);
+      }
+
    }
 
    private String buildQuestion(Category category, int index) {
@@ -78,8 +74,8 @@ public class GameBetter implements IGame {
             System.out.println(players.get(currentPlayer)
                                + "'s new location is "
                                + places[currentPlayer]);
-            System.out.println("The category is " + currentCategory());
-            askQuestion();
+            System.out.println("The category is " + getCurrentCategory().toString());
+            getCurrentQuestion();
          } else {
             System.out.println(players.get(currentPlayer) + " is not getting out of the penalty box");
             isGettingOutOfPenaltyBox = false;
@@ -93,28 +89,25 @@ public class GameBetter implements IGame {
          System.out.println(players.get(currentPlayer)
                             + "'s new location is "
                             + places[currentPlayer]);
-         System.out.println("The category is " + currentCategory());
-         askQuestion();
+         System.out.println("The category is " + getCurrentCategory().toString());
+         getCurrentQuestion();
       }
 
    }
 
-   private void askQuestion() {
+   private void getCurrentQuestion() {
+      Category category = getCurrentCategory();
+      if (!this.questions.containsKey(category)) {
+         return;
+      }
 
-      if (Objects.equals(currentCategory(), Category.POP.toString()))
-         System.out.println(this.questions.get(Category.POP).removeFirst());
-      if (Objects.equals(currentCategory(), Category.SCIENCE.toString()))
-         System.out.println(this.questions.get(Category.SCIENCE).removeFirst());
-      if (Objects.equals(currentCategory(), Category.SPORTS.toString()))
-         System.out.println(this.questions.get(Category.SPORTS).removeFirst());
-      if (Objects.equals(currentCategory(), Category.ROCK.toString()))
-         System.out.println(this.questions.get(Category.ROCK).removeFirst());
+      String questionList = this.questions.get(category).removeFirst();
+      System.out.println(questionList);
+
    }
 
-
-   private String currentCategory() {
-      Category category = this.board.getBoardCategoryByIndex(places[currentPlayer]);
-      return category.toString();
+   private Category getCurrentCategory() {
+      return this.board.getBoardCategoryByIndex(places[currentPlayer]);
    }
 
    public boolean wasCorrectlyAnswered() {
