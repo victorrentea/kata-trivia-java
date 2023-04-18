@@ -1,7 +1,10 @@
 package trivia;
 
+import trivia.objects.Category;
+
 import java.util.ArrayList;
 import java.util.LinkedList;
+import java.util.Objects;
 
 // REFACTOR ME
 public class GameBetter implements IGame {
@@ -87,28 +90,31 @@ public class GameBetter implements IGame {
    }
 
    private void askQuestion() {
-      if (currentCategory() == "Pop")
+
+      if (Objects.equals(currentCategory(), "Pop"))
          System.out.println(popQuestions.removeFirst());
-      if (currentCategory() == "Science")
+      if (Objects.equals(currentCategory(), "Science"))
          System.out.println(scienceQuestions.removeFirst());
-      if (currentCategory() == "Sports")
+      if (Objects.equals(currentCategory(), "Sports"))
          System.out.println(sportsQuestions.removeFirst());
-      if (currentCategory() == "Rock")
+      if (Objects.equals(currentCategory(), "Rock"))
          System.out.println(rockQuestions.removeFirst());
    }
 
 
    private String currentCategory() {
-      if (places[currentPlayer] == 0) return "Pop";
-      if (places[currentPlayer] == 4) return "Pop";
-      if (places[currentPlayer] == 8) return "Pop";
-      if (places[currentPlayer] == 1) return "Science";
-      if (places[currentPlayer] == 5) return "Science";
-      if (places[currentPlayer] == 9) return "Science";
-      if (places[currentPlayer] == 2) return "Sports";
-      if (places[currentPlayer] == 6) return "Sports";
-      if (places[currentPlayer] == 10) return "Sports";
-      return "Rock";
+      if (places[currentPlayer] == 0) return Category.POP.toString();
+      if (places[currentPlayer] == 4) return Category.POP.toString();
+      if (places[currentPlayer] == 8) return Category.POP.toString();
+
+      if (places[currentPlayer] == 1) return Category.SCIENCE.toString();
+      if (places[currentPlayer] == 5) return Category.SCIENCE.toString();
+      if (places[currentPlayer] == 9) return Category.SCIENCE.toString();
+
+      if (places[currentPlayer] == 2) return Category.SPORTS.toString();
+      if (places[currentPlayer] == 6) return Category.SPORTS.toString();
+      if (places[currentPlayer] == 10) return Category.SPORTS.toString();
+      return String.valueOf(Category.ROCK);
    }
 
    public boolean wasCorrectlyAnswered() {

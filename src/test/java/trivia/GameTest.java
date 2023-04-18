@@ -45,7 +45,7 @@ public class GameTest {
 		String actualOutput = extractOutput(new Random(seed), new GameBetter());
 
 		assertEquals(
-				String.format("Change detected for seed %d, debug with ignored testRandomSeedMatchesGameOutput test", seed),
+				String.format("Change detected for seed %d, excepted = %s, got = %s", seed, expectedOutput, actualOutput),
 				expectedOutput,
 				actualOutput
 		);
