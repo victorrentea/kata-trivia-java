@@ -28,6 +28,10 @@ public class GameBoard {
         return true;
     }
 
+    public Player getPlayer(int playerIndex) {
+        return this.players.get(playerIndex);
+    }
+
     public int getPlayerPosition(int playerIndex) {
         return this.players.get(playerIndex).position;
     }

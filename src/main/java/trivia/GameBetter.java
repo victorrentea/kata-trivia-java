@@ -3,6 +3,7 @@ package trivia;
 import trivia.core.GameBoard;
 import trivia.core.GameConfig;
 import trivia.objects.Category;
+import trivia.objects.Player;
 
 import java.util.*;
 import java.util.stream.IntStream;
@@ -10,7 +11,6 @@ import java.util.stream.IntStream;
 // REFACTOR ME
 public class GameBetter implements IGame {
    private final GameBoard board;
-   int[] purses = new int[6];
 
    private final Map<Category, LinkedList<String>> questions = new HashMap<>();
 
@@ -23,13 +23,15 @@ public class GameBetter implements IGame {
    }
 
    public boolean wasCorrectlyAnswered() {
+      Player player = this.board.getPlayer(currentPlayer);
+
       if (this.board.isInPenalty(currentPlayer)) {
          if (isGettingOutOfPenaltyBox) {
             System.out.println("Answer was correct!!!!");
-            purses[currentPlayer]++;
+            player.addCoins();
             System.out.println(this.board.getPlayerName(currentPlayer)
                     + " now has "
-                    + purses[currentPlayer]
+                    + player.getCoins()
                     + " Gold Coins.");
 
             boolean winner = didPlayerWin();
@@ -47,10 +49,10 @@ public class GameBetter implements IGame {
       } else {
 
          System.out.println("Answer was corrent!!!!");
-         purses[currentPlayer]++;
+         player.addCoins();
          System.out.println(this.board.getPlayerName(currentPlayer)
                  + " now has "
-                 + purses[currentPlayer]
+                 + player.getCoins()
                  + " Gold Coins.");
 
          boolean winner = didPlayerWin();
@@ -140,6 +142,6 @@ public class GameBetter implements IGame {
 
 
    private boolean didPlayerWin() {
-      return !(purses[currentPlayer] == 6);
+      return !(this.board.getPlayer(currentPlayer).getCoins() == 6);
    }
 }
