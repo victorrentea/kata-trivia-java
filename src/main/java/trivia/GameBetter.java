@@ -25,11 +25,7 @@ public class GameBetter implements IGame {
    public boolean wasCorrectlyAnswered() {
       Player player = this.board.getPlayer(currentPlayer);
 
-      if (player.getPenalty()) {
-         if (isGettingOutOfPenaltyBox) {
-            return this.onPlayerAnswerCorrect(player);
-         }
-
+      if (player.getPenalty() && !isGettingOutOfPenaltyBox) {
          currentPlayer++;
          if (currentPlayer == this.board.totalPlayers) currentPlayer = 0;
          return true;
@@ -39,13 +35,8 @@ public class GameBetter implements IGame {
    }
 
    public boolean wrongAnswer() {
-      System.out.println("Question was incorrectly answered");
-      System.out.println(this.board.getPlayer(currentPlayer).name + " was sent to the penalty box");
-      this.board.getPlayer(currentPlayer).setPenalty(true);
-
-      currentPlayer++;
-      if (currentPlayer == this.board.totalPlayers) currentPlayer = 0;
-      return true;
+      Player player = this.board.getPlayer(currentPlayer);
+      return this.onPlayerAnswerWrong(player);
    }
 
    public boolean add(String playerName) {
@@ -126,6 +117,15 @@ public class GameBetter implements IGame {
       return winner;
 
    }
+
+   private boolean onPlayerAnswerWrong(Player player)  {
+      System.out.printf(GameConfig.TEXT_FORMAT_ANSWER_WAS_WRONG, player.name);
+      player.setPenalty(true);
+
+      nextPlayerSet();
+      return true;
+   }
+
 
    private boolean didPlayerWin(int coins) {
       return !(coins >= GameConfig.PLAYER_MIN_COIN_WIN_COUNT);
