@@ -1,11 +1,14 @@
 package trivia;
 
+import trivia.core.GameConfig;
 import trivia.objects.Category;
 
 import java.util.*;
+import java.util.stream.IntStream;
 
 // REFACTOR ME
 public class GameBetter implements IGame {
+
 
    ArrayList<String> players = new ArrayList<>();
    int[] places = new int[6];
@@ -24,21 +27,23 @@ public class GameBetter implements IGame {
    boolean isGettingOutOfPenaltyBox;
 
    public GameBetter() {
-      for (int index = 0; index < 50; index++) {
+      buildQuestionnaire();
+   }
+
+   private void buildQuestionnaire() {
+      IntStream.range(0, GameConfig.TOTAL_QUESTIONS).forEachOrdered(index -> {
          for (Category category : Category.values()) {
             LinkedList<String> questionList = this.questions.get(category);
             questionList.addLast(buildQuestion(category, index));
          }
-
-      }
+      });
    }
 
-   public String buildQuestion(Category category, int index) {
-      String QUESTION_BASE_FORMAT = "%s Question %d";
-      return String.format(QUESTION_BASE_FORMAT, category, index);
+   private String buildQuestion(Category category, int index) {
+      return String.format(GameConfig.TEXT_FORMAT_QUESTION_BODY, category, index);
    }
 
-   public boolean isPlayable() {
+   public boolean isPlayable() {  // todo, can use this .
       return (howManyPlayers() >= 2);
    }
 
