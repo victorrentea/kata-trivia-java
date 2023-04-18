@@ -8,6 +8,8 @@ import java.util.Objects;
 
 // REFACTOR ME
 public class GameBetter implements IGame {
+   private final String QUESTION_BASE_FORMAT = "%s Question %d";
+
    ArrayList<String> players = new ArrayList<>();
    int[] places = new int[6];
    int[] purses = new int[6];
@@ -23,15 +25,15 @@ public class GameBetter implements IGame {
 
    public GameBetter() {
       for (int i = 0; i < 50; i++) {
-         popQuestions.addLast(String.format("%s Question %d", Category.POP, i));
-         scienceQuestions.addLast(String.format("%s Question %d", Category.SCIENCE, i));
-         sportsQuestions.addLast(String.format("%s Question %d", Category.SPORTS, i));
+         popQuestions.addLast(String.format(QUESTION_BASE_FORMAT, Category.POP, i));
+         scienceQuestions.addLast(String.format(QUESTION_BASE_FORMAT, Category.SCIENCE, i));
+         sportsQuestions.addLast(String.format(QUESTION_BASE_FORMAT, Category.SPORTS, i));
          rockQuestions.addLast(createRockQuestion(i));
       }
    }
 
    public String createRockQuestion(int index) {
-      return String.format("%s Question %d", Category.ROCK, index);
+      return String.format(QUESTION_BASE_FORMAT, Category.ROCK, index);
    }
 
    public boolean isPlayable() {
