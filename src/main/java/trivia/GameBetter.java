@@ -14,7 +14,7 @@ public class GameBetter implements IGame {
 
    private final Map<Category, LinkedList<String>> questions = new HashMap<>();
 
-   int currentPlayer = 0;
+   private int currentPlayer = 0;
    boolean isGettingOutOfPenaltyBox;
 
    public GameBetter() {
@@ -25,42 +25,17 @@ public class GameBetter implements IGame {
    public boolean wasCorrectlyAnswered() {
       Player player = this.board.getPlayer(currentPlayer);
 
-      if (this.board.getPlayer(currentPlayer).getPenalty()) {
+      if (player.getPenalty()) {
          if (isGettingOutOfPenaltyBox) {
-            System.out.println("Answer was correct!!!!");
-            player.addCoins();
-            System.out.println(this.board.getPlayer(currentPlayer).name
-                    + " now has "
-                    + player.getCoins()
-                    + " Gold Coins.");
-
-            boolean winner = didPlayerWin();
-            currentPlayer++;
-            if (currentPlayer == this.board.totalPlayers) currentPlayer = 0;
-
-            return winner;
-         } else {
-            currentPlayer++;
-            if (currentPlayer == this.board.totalPlayers) currentPlayer = 0;
-            return true;
+            return this.onPlayerAnswerCorrect(player);
          }
 
-
-      } else {
-
-         System.out.println("Answer was corrent!!!!");
-         player.addCoins();
-         System.out.println(this.board.getPlayer(currentPlayer).name
-                 + " now has "
-                 + player.getCoins()
-                 + " Gold Coins.");
-
-         boolean winner = didPlayerWin();
          currentPlayer++;
          if (currentPlayer == this.board.totalPlayers) currentPlayer = 0;
-
-         return winner;
+         return true;
       }
+
+      return this.onPlayerAnswerCorrect(player);
    }
 
    public boolean wrongAnswer() {
@@ -140,8 +115,25 @@ public class GameBetter implements IGame {
       return this.board.getBoardCategoryByIndex(this.board.getPlayer(currentPlayer).position);
    }
 
+   private boolean onPlayerAnswerCorrect(Player player)  {
+      player.addCoins();
+      int coins = player.getCoins();
+      System.out.printf((GameConfig.TEXT_FORMAT_CURRENT_PLAYER_COINS) + "%n", player.name, coins);
 
-   private boolean didPlayerWin() {
-      return !(this.board.getPlayer(currentPlayer).getCoins() == 6);
+      boolean winner = didPlayerWin(coins);
+
+      nextPlayerSet();
+      return winner;
+
    }
+
+   private boolean didPlayerWin(int coins) {
+      return !(coins >= GameConfig.PLAYER_MIN_COIN_WIN_COUNT);
+   }
+
+   private void nextPlayerSet() {
+      currentPlayer++;
+      if (currentPlayer == this.board.totalPlayers) currentPlayer = 0;
+   }
+
 }
