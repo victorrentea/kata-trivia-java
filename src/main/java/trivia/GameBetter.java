@@ -1,5 +1,6 @@
 package trivia;
 
+import trivia.core.GameBoard;
 import trivia.core.GameConfig;
 import trivia.objects.Category;
 
@@ -8,8 +9,7 @@ import java.util.stream.IntStream;
 
 // REFACTOR ME
 public class GameBetter implements IGame {
-
-
+   private final GameBoard board;
    ArrayList<String> players = new ArrayList<>();
    int[] places = new int[6];
    int[] purses = new int[6];
@@ -27,6 +27,7 @@ public class GameBetter implements IGame {
    boolean isGettingOutOfPenaltyBox;
 
    public GameBetter() {
+      this.board = new GameBoard();
       buildQuestionnaire();
    }
 
@@ -112,18 +113,8 @@ public class GameBetter implements IGame {
 
 
    private String currentCategory() {
-      if (places[currentPlayer] == 0) return Category.POP.toString();
-      if (places[currentPlayer] == 4) return Category.POP.toString();
-      if (places[currentPlayer] == 8) return Category.POP.toString();
-
-      if (places[currentPlayer] == 1) return Category.SCIENCE.toString();
-      if (places[currentPlayer] == 5) return Category.SCIENCE.toString();
-      if (places[currentPlayer] == 9) return Category.SCIENCE.toString();
-
-      if (places[currentPlayer] == 2) return Category.SPORTS.toString();
-      if (places[currentPlayer] == 6) return Category.SPORTS.toString();
-      if (places[currentPlayer] == 10) return Category.SPORTS.toString();
-      return Category.ROCK.toString();
+      Category category = this.board.getBoardCategoryByIndex(places[currentPlayer]);
+      return category.toString();
    }
 
    public boolean wasCorrectlyAnswered() {
