@@ -25,11 +25,11 @@ public class GameBetter implements IGame {
    public boolean wasCorrectlyAnswered() {
       Player player = this.board.getPlayer(currentPlayer);
 
-      if (this.board.isInPenalty(currentPlayer)) {
+      if (this.board.getPlayer(currentPlayer).getPenalty()) {
          if (isGettingOutOfPenaltyBox) {
             System.out.println("Answer was correct!!!!");
             player.addCoins();
-            System.out.println(this.board.getPlayerName(currentPlayer)
+            System.out.println(this.board.getPlayer(currentPlayer).name
                     + " now has "
                     + player.getCoins()
                     + " Gold Coins.");
@@ -50,7 +50,7 @@ public class GameBetter implements IGame {
 
          System.out.println("Answer was corrent!!!!");
          player.addCoins();
-         System.out.println(this.board.getPlayerName(currentPlayer)
+         System.out.println(this.board.getPlayer(currentPlayer).name
                  + " now has "
                  + player.getCoins()
                  + " Gold Coins.");
@@ -65,8 +65,8 @@ public class GameBetter implements IGame {
 
    public boolean wrongAnswer() {
       System.out.println("Question was incorrectly answered");
-      System.out.println(this.board.getPlayerName(currentPlayer) + " was sent to the penalty box");
-      this.board.setPenalty(currentPlayer, true);
+      System.out.println(this.board.getPlayer(currentPlayer).name + " was sent to the penalty box");
+      this.board.getPlayer(currentPlayer).setPenalty(true);
 
       currentPlayer++;
       if (currentPlayer == this.board.totalPlayers) currentPlayer = 0;
@@ -78,32 +78,32 @@ public class GameBetter implements IGame {
    }
 
    public void roll(int roll) {
-      System.out.println(this.board.getPlayerName(currentPlayer) + " is the current player");
+      System.out.println(this.board.getPlayer(currentPlayer).name + " is the current player");
       System.out.println("They have rolled a " + roll);
 
-      if (this.board.isInPenalty(currentPlayer)) {
+      if (this.board.getPlayer(currentPlayer).getPenalty()) {
          if (roll % 2 != 0) {
             isGettingOutOfPenaltyBox = true;
 
-            System.out.println(this.board.getPlayerName(currentPlayer) + " is getting out of the penalty box");
+            System.out.println(this.board.getPlayer(currentPlayer).name + " is getting out of the penalty box");
             this.board.updatePlayerPosition(currentPlayer, roll);
 
-            System.out.println(this.board.getPlayerName(currentPlayer)
+            System.out.println(this.board.getPlayer(currentPlayer).name
                                + "'s new location is "
-                               + this.board.getPlayerPosition(currentPlayer));
+                               + this.board.getPlayer(currentPlayer).position);
             System.out.println("The category is " + getCurrentCategory().toString());
             getCurrentQuestion();
          } else {
-            System.out.println(this.board.getPlayerName(currentPlayer) + " is not getting out of the penalty box");
+            System.out.println(this.board.getPlayer(currentPlayer).name + " is not getting out of the penalty box");
             isGettingOutOfPenaltyBox = false;
          }
 
       } else {
          this.board.updatePlayerPosition(currentPlayer, roll);
 
-         System.out.println(this.board.getPlayerName(currentPlayer)
+         System.out.println(this.board.getPlayer(currentPlayer).name
                             + "'s new location is "
-                            + this.board.getPlayerPosition(currentPlayer));
+                            + this.board.getPlayer(currentPlayer).position);
          System.out.println("The category is " + getCurrentCategory().toString());
          getCurrentQuestion();
       }
@@ -137,7 +137,7 @@ public class GameBetter implements IGame {
    }
 
    private Category getCurrentCategory() {
-      return this.board.getBoardCategoryByIndex(this.board.getPlayerPosition(currentPlayer));
+      return this.board.getBoardCategoryByIndex(this.board.getPlayer(currentPlayer).position);
    }
 
 

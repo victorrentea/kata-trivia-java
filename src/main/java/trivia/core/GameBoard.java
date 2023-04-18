@@ -32,23 +32,6 @@ public class GameBoard {
         return this.players.get(playerIndex);
     }
 
-    public int getPlayerPosition(int playerIndex) {
-        return this.players.get(playerIndex).position;
-    }
-
-    public String getPlayerName(int playerIndex) {
-        return this.players.get(playerIndex).name;
-    }
-
-    public boolean isInPenalty(int playerIndex) {
-        return this.players.get(playerIndex).hasPenalty;
-    }
-
-    public void setPenalty(int playerIndex, boolean value) {
-        this.players.get(playerIndex).hasPenalty = value;
-    }
-
-
     public void updatePlayerPosition(int playerIndex, int playerMovement) {
         Player player = this.players.get(playerIndex);
 
