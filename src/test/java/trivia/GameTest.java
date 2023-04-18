@@ -1,4 +1,3 @@
-
 package trivia;
 
 import org.junit.Ignore;
@@ -11,42 +10,19 @@ import java.util.Random;
 import static org.junit.Assert.assertEquals;
 
 public class GameTest {
-	@Test
-	public void caracterizationTest() {
-		// runs 10.000 "random" games to see the output of old and new code mathces
-		for (int seed = 1; seed < 10_000; seed++) {
-			testSeed(seed, false);
-		}
-	}
-
-	private void testSeed(int seed, boolean printExpected) {
-		String expectedOutput = extractOutput(new Random(seed), new Game());
-		if (printExpected) {
-			System.out.println(expectedOutput);
-		}
-		String actualOutput = extractOutput(new Random(seed), new GameBetter());
-		assertEquals("Change detected for seed " + seed +
-						 ". To breakpoint through it, run this seed alone using the (ignored) test below",
-			expectedOutput, actualOutput);
-	}
-	@Test
-	@Ignore("enable back and set a particular seed to see the output")
-	public void oneSeed() {
-		testSeed(1, true);
-	}
-
 	private String extractOutput(Random rand, IGame aGame) {
 		PrintStream old = System.out;
-		ByteArrayOutputStream baos = new ByteArrayOutputStream();
-		try (PrintStream inmemory = new PrintStream(baos)) {
+		ByteArrayOutputStream output = new ByteArrayOutputStream();
+		try (PrintStream inmemory = new PrintStream(output)) {
+
 			// WARNING: System.out.println() doesn't work in this try {} as the sysout is captured and recorded in memory.
-			System.setOut(inmemory);
+			System.setOut(inmemory); // TODO: use in game loggin or another tool so that we don't have to touch sys.out
 
 			aGame.add("Chet");
 			aGame.add("Pat");
 			aGame.add("Sue");
 
-			boolean notAWinner = false;
+			boolean notAWinner;
 			do {
 				aGame.roll(rand.nextInt(5) + 1);
 
@@ -61,6 +37,35 @@ public class GameTest {
 			System.setOut(old);
 		}
 
-		return new String(baos.toByteArray());
+		return output.toString();
 	}
+
+	private String testSeed(int seed) {
+		String expectedOutput = extractOutput(new Random(seed), new Game());
+		String actualOutput = extractOutput(new Random(seed), new GameBetter());
+
+		assertEquals(
+				String.format("Change detected for seed %d, debug with ignored testRandomSeedMatchesGameOutput test", seed),
+				expectedOutput,
+				actualOutput
+		);
+		return expectedOutput;
+	}
+
+	@Test
+	@Ignore("enable back and set a particular seed to see the output")
+	public void testNewImplementationMatchesOld() {
+		String output = testSeed(1);
+		System.out.println(output);
+	}
+
+	@Test
+	public void testNewImplementationMatchesOldUsingManySeeds() {
+		int totalRandomGames = 10_000;
+		for (int seed = 1; seed < totalRandomGames; seed++) {
+			testSeed(seed);
+		}
+	}
+
+
 }
