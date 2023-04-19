@@ -42,7 +42,7 @@ public class GameTest {
 
 	private String testSeed(int seed) {
 		String expectedOutput = extractOutput(new Random(seed), new Game());
-		String actualOutput = extractOutput(new Random(seed), new GameBetter());
+		String actualOutput = extractOutput(new Random(seed), new GameV2());
 
 		assertEquals(
 				String.format("Change detected for seed %d, excepted = %s, got = %s", seed, expectedOutput, actualOutput),

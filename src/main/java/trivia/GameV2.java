@@ -9,7 +9,7 @@ import java.util.*;
 import java.util.stream.IntStream;
 
 // REFACTOR ME
-public class GameBetter implements IGame {
+public class GameV2 implements IGame {
    private final GameBoard board;
 
    private final Map<Category, LinkedList<String>> questions = new HashMap<>();
@@ -17,7 +17,7 @@ public class GameBetter implements IGame {
    private int currentPlayer = 0;
    boolean isGettingOutOfPenaltyBox;
 
-   public GameBetter() {
+   public GameV2() {
       this.board = new GameBoard();
       buildQuestionnaire();
    }
