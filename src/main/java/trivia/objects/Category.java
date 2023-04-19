@@ -4,7 +4,8 @@ public enum Category {
     POP,
     SCIENCE,
     SPORTS,
-    ROCK;
+    ROCK,
+    GEOGRAPHY;
 
     @Override
     public String toString() {
