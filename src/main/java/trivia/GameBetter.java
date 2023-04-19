@@ -26,8 +26,7 @@ public class GameBetter implements IGame {
       Player player = this.board.getPlayer(currentPlayer);
 
       if (player.getPenalty() && !isGettingOutOfPenaltyBox) {
-         currentPlayer++;
-         if (currentPlayer == this.board.totalPlayers) currentPlayer = 0;
+         this.nextPlayerSet();
          return true;
       }
 
@@ -44,35 +43,35 @@ public class GameBetter implements IGame {
    }
 
    public void roll(int roll) {
-      System.out.println(this.board.getPlayer(currentPlayer).name + " is the current player");
-      System.out.println("They have rolled a " + roll);
+      Player player = this.board.getPlayer(currentPlayer);
 
-      if (this.board.getPlayer(currentPlayer).getPenalty()) {
-         if (roll % 2 != 0) {
-            isGettingOutOfPenaltyBox = true;
+      System.out.printf(GameConfig.TEXT_FORMAT_ROLL, player.name, roll);
 
-            System.out.println(this.board.getPlayer(currentPlayer).name + " is getting out of the penalty box");
-            this.board.updatePlayerPosition(currentPlayer, roll);
-
-            System.out.println(this.board.getPlayer(currentPlayer).name
-                               + "'s new location is "
-                               + this.board.getPlayer(currentPlayer).position);
-            System.out.println("The category is " + getCurrentCategory().toString());
-            getCurrentQuestion();
-         } else {
-            System.out.println(this.board.getPlayer(currentPlayer).name + " is not getting out of the penalty box");
-            isGettingOutOfPenaltyBox = false;
-         }
-
-      } else {
-         this.board.updatePlayerPosition(currentPlayer, roll);
-
-         System.out.println(this.board.getPlayer(currentPlayer).name
-                            + "'s new location is "
-                            + this.board.getPlayer(currentPlayer).position);
-         System.out.println("The category is " + getCurrentCategory().toString());
-         getCurrentQuestion();
+      if (player.getPenalty() && roll % 2 == 0) {
+         System.out.printf(GameConfig.TEXT_FORMAT_PENALTY_IN, player.name );
+         isGettingOutOfPenaltyBox = false;
+         return;
       }
+
+      this.board.updatePlayerPosition(currentPlayer, roll);
+      String message = String.format(GameConfig.TEXT_FORMAT_ROLL_END,
+              player.name,
+              player.position,
+              getCurrentCategory().toString()
+      );
+
+      if (player.getPenalty() && roll % 2 != 0) {
+         isGettingOutOfPenaltyBox = true;
+         message = String.format(GameConfig.TEXT_FORMAT_PENALTY_OUT + GameConfig.TEXT_FORMAT_ROLL_END,
+                 player.name,
+                 player.name,
+                 player.position,
+                 getCurrentCategory().toString()
+         );
+      }
+
+      System.out.print(message);
+      getNextQuestion();
 
    }
 
@@ -91,7 +90,7 @@ public class GameBetter implements IGame {
       return String.format(GameConfig.TEXT_FORMAT_QUESTION_BODY, category, index);
    }
 
-   private void getCurrentQuestion() {
+   private void getNextQuestion() {
       Category category = getCurrentCategory();
       if (!this.questions.containsKey(category)) {
          return;
