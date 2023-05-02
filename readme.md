@@ -40,7 +40,12 @@ Warnings:
 
 Do you best until you're *proud* of this code!
 
-**Expected Working Time**: 1-3 hours. _(more, but better if Pair Programming)_
+## Expected Working Time: 2-4 hours
+For Best Experience:
+- Ideally work in Pair Programming
+- You will need a min of 3-4 passes through code
+- Re-read each class until there's **nothing** to improve
+
 
 ## Technique
 - Try to use as much quickfix as possible: Alt-Enter/⌥Enter (IntelliJ) or Ctrl-1 (Eclipse) 
