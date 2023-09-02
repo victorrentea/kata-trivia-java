@@ -67,7 +67,7 @@ public class Game implements IGame {
 
             System.out.println(players.get(currentPlayer)
                                + "'s new location is "
-                               + places[currentPlayer]);
+                               + (places[currentPlayer] + 1));
             System.out.println("The category is " + currentCategory());
             askQuestion();
          } else {
@@ -82,7 +82,7 @@ public class Game implements IGame {
 
          System.out.println(players.get(currentPlayer)
                             + "'s new location is "
-                            + places[currentPlayer]);
+                            + (places[currentPlayer] + 1));
          System.out.println("The category is " + currentCategory());
          askQuestion();
       }
@@ -138,7 +138,7 @@ public class Game implements IGame {
 
       } else {
 
-         System.out.println("Answer was corrent!!!!");
+         System.out.println("Answer was correct!!!!");
          purses[currentPlayer]++;
          System.out.println(players.get(currentPlayer)
                             + " now has "
