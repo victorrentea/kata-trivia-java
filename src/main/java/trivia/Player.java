@@ -1,28 +1,44 @@
 package trivia;
 
-
-
 public class Player {
-    public String name;
-    public int position;
-    public int coins;
+  private final String name;
+  private int position;
+  private int coins;
+  private boolean isInPenaltyBox;
 
-    public boolean isInPenaltyBox;
+  public Player(String name) {
+    this.name = name;
+  }
 
-
-    public Player(String name){
-        this.name = name;
-        this.position = 0;
-        this.coins = 0;
-        this.isInPenaltyBox = false;
+  public void rollPosition(int roll, int totalNumberOfPositions) {
+    this.position += roll;
+    if (this.position > totalNumberOfPositions - 1) {
+      this.position -= totalNumberOfPositions;
     }
-
-    public void rollPosition(int roll, int totalNumberOfPositions){
-        this.position = this.position + roll;
-        if (this.position > totalNumberOfPositions - 1)
-            this.position -= totalNumberOfPositions;
-
-    }
+  }
 
 
+  public String getName() {
+    return name;
+  }
+
+  public int getPosition() {
+    return position;
+  }
+
+  public int getCoins() {
+    return coins;
+  }
+
+  public void setCoins(int coins) {
+    this.coins = coins;
+  }
+
+  public boolean isInPenaltyBox() {
+    return isInPenaltyBox;
+  }
+
+  public void setInPenaltyBox(boolean inPenaltyBox) {
+    isInPenaltyBox = inPenaltyBox;
+  }
 }
