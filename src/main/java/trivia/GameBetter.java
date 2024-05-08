@@ -81,7 +81,7 @@ public class GameBetter implements IGame {
         if (currentPlayer().isInPenaltyBox()) {
             if (isGettingOutOfPenaltyBox) {
                 System.out.println("Answer was correct!!!!");
-                currentPlayer().setCoins(currentPlayer().getCoins() + 1);
+                currentPlayer().addCoin();
                 System.out.println(currentPlayer().getName()
                                    + " now has "
                                    + currentPlayer().getCoins()
@@ -100,7 +100,7 @@ public class GameBetter implements IGame {
         } else {
 
             System.out.println("Answer was correct!!!!");
-            currentPlayer().setCoins(currentPlayer().getCoins() + 1);
+            currentPlayer().addCoin();
             System.out.println(currentPlayer().getName()
                                + " now has "
                                + currentPlayer().getCoins()
