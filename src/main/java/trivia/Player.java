@@ -41,4 +41,11 @@ public class Player {
   void addCoin() {
       coins++;
   }
+
+  public void getState() {
+    System.out.println(this.getName()
+            + " now has "
+            + this.getCoins()
+            + " Gold Coins.");
+  }
 }

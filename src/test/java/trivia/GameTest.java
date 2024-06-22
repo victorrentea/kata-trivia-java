@@ -30,7 +30,7 @@ public class GameTest {
 			expectedOutput, actualOutput);
 	}
 	@Test
-	@Ignore("enable back and set a particular seed to see the output")
+//	@Ignore("enable back and set a particular seed to see the output")
 	public void oneSeed() {
 		testSeed(1, true);
 	}
