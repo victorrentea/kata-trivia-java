@@ -51,4 +51,12 @@ public class PlayerMangerImpl implements PlayerManger {
     public int getCurrentPlayerLocation() {
         return currentPlayer().getPosition();
     }
+
+    @Override
+    public void getCurrentPlayerState() {
+        System.out.println(currentPlayer().getName()
+                + " now has "
+                + this.currentPlayer().getCoins()
+                + " Gold Coins.");
+    }
 }

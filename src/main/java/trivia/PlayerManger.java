@@ -17,4 +17,5 @@ public interface PlayerManger {
 
     int getCurrentPlayerLocation();
 
+    void getCurrentPlayerState();
 }
