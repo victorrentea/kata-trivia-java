@@ -30,15 +30,15 @@ public class Player {
     return coins;
   }
 
+  public void setCoins(int coins) {
+    this.coins = coins;
+  }
+
   public boolean isInPenaltyBox() {
     return isInPenaltyBox;
   }
 
   public void setInPenaltyBox(boolean inPenaltyBox) {
     isInPenaltyBox = inPenaltyBox;
-  }
-
-  void addCoin() {
-      coins++;
   }
 }
