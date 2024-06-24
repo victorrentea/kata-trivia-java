@@ -70,7 +70,7 @@ public class GameBetter implements IGame {
     private boolean isWinner() {
         System.out.println("Answer was correct!!!!");
         playerManger.currentPlayer().addCoin();
-        playerManger.getCurrentPlayerState();
+        playerManger.currentPlayer().getState();
         boolean winner = playerManger.didPlayerWin();
         playerManger.nextPlayer();
 
