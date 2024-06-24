@@ -140,7 +140,7 @@ public class Game implements IGame {
 
     } else {
 
-      System.out.println("Answer was correct!!!!");
+      System.out.println("Answer was corrent!!!!");
       purses[currentPlayer]++;
       System.out.println(players.get(currentPlayer)
                          + " now has "
