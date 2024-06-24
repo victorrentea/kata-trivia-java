@@ -7,9 +7,11 @@ import java.util.List;
 public class GameBetter implements IGame {
     private static final int TOTAL_NUMBER_OF_POSITIONS = 12;
     private static final int NUMBER_OF_CATEGORIES = 4;
+
     private final PlayerManger playerManger = new PlayerMangerImpl();
     private final DiceManager diceManager = new DiceManagerImpl();
     private final Questions questions = new Questions();
+    private boolean isGettingOutOfPenaltyBox;
 
 
     public boolean add(String playerName) {
@@ -18,6 +20,7 @@ public class GameBetter implements IGame {
 
 
     public void roll(int roll) {
+
         handlePenalty(roll);
         playerManger.currentPlayer().rollPosition(roll, TOTAL_NUMBER_OF_POSITIONS);
         showStatusOfCurrentPlayer();
@@ -85,4 +88,5 @@ public class GameBetter implements IGame {
         playerManger.nextPlayer();
         return true;
     }
+
 }
