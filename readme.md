@@ -17,7 +17,7 @@ Once upon a time, there was an ugly implementation of the Trivia Game.
 
 Someone once noticed that as long as the same input is provided to the system, 
 it will print the same output at the console. So that guy then had the idea to 
-Copy-Paste the old implementation (to GameBetter.java), and write a test
+Copy-Paste the old implementation (to Game.java), and write a test
 that using a LOT of random inputs would call both the old system and the NEW system with the same inputs.
 Many-many times. 10.000 times. And then the test would then just verify that the console output 
 remained the same despite your refactorings.
@@ -25,18 +25,18 @@ remained the same despite your refactorings.
 This is called the "Golden Master Method", and it was used to build GameTest. 
 
 ## The Task
-Your job is to refactor GameBetter.java, continuously running GameTest to make sure you don't break anything.
+Your job is to refactor Game.java, continuously running GameTest to make sure you don't break anything.
 
 ⚠️ Try to avoid over-engineering: Keep It Short and Simple (💋KISS Principle)
 
-**Do not touch Game.java** unless to fix a bug.
+**Do not touch GameOld.java** unless to fix a bug.
 
 Goal: apply Object-Oriented Principles, Identify Responsibilities (SRP), remove duplication (DRY principle), and other good software practices! 
 
 Warnings:
 - Some names are misleading.
 - There are missing abstractions (classes).
-- There is a typo and a bug hidden in there. Can you find it? If you do, fix it in the old code too (Game.java).
+- There is a typo and a bug hidden in there. Can you find it? If you do, fix it in the old code too (GameOld.java).
 
 Do you best until you're *proud* of this code!
 

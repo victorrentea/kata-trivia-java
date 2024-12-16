@@ -17,7 +17,7 @@ public class PlayGame {
       if (playerCount < 1 || playerCount > 4) throw new IllegalArgumentException("No player 1..4");
       System.out.println("Reading names for " + playerCount + " players:");
 
-      IGame aGame = new Game();
+      IGame aGame = new GameOld();
 
       for (int i = 1; i <= playerCount; i++) {
          System.out.print("Player "+i+" name: ");

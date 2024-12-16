@@ -3,8 +3,7 @@ package trivia;
 import java.util.ArrayList;
 import java.util.LinkedList;
 
-
-// TODO refactor me
+// REFACTOR ME
 public class Game implements IGame {
    ArrayList players = new ArrayList();
    int[] places = new int[6];
@@ -37,8 +36,6 @@ public class Game implements IGame {
    }
 
    public boolean add(String playerName) {
-
-
       players.add(playerName);
       places[howManyPlayers()] = 0;
       purses[howManyPlayers()] = 0;
