@@ -84,7 +84,6 @@ public class Game implements IGame {
       System.out.println("The category is " + currentCategory());
       askQuestion();
     }
-
   }
 
   private void askQuestion() {
@@ -97,7 +96,6 @@ public class Game implements IGame {
     if (currentCategory() == "Rock")
       System.out.println(rockQuestions.removeFirst());
   }
-
 
   private String currentCategory() {
     if (places[currentPlayer] == 0) return "Pop";
