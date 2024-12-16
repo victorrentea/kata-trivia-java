@@ -51,6 +51,7 @@ class Player {
 
 public class Game implements IGame {
   private List<Player> players = new ArrayList<>();
+  // TODO exercitiu cititorului> sterge de mai jos sa ramana doar List<Players> ETA = 6h.
   private List<String> playerNames = new ArrayList<>();
   private int[] places = new int[6];
   private int[] purses = new int[6];
