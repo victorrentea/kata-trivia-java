@@ -2,6 +2,7 @@ package trivia;
 
 import java.util.ArrayList;
 import java.util.LinkedList;
+import java.util.List;
 
 
 // TODO refactor me
@@ -11,20 +12,20 @@ public class Game implements IGame {
   int[] purses = new int[6];
   boolean[] inPenaltyBox = new boolean[6];
 
-  LinkedList popQuestions = new LinkedList();
-  LinkedList scienceQuestions = new LinkedList();
-  LinkedList sportsQuestions = new LinkedList();
-  LinkedList rockQuestions = new LinkedList();
+  List popQuestions = new ArrayList();
+  List scienceQuestions = new ArrayList();
+  List sportsQuestions = new ArrayList();
+  List rockQuestions = new ArrayList();
 
   int currentPlayer = 0;
   boolean isGettingOutOfPenaltyBox;
 
   public Game() {
     for (int i = 0; i < 50; i++) {
-      popQuestions.addLast("Pop Question " + i);
-      scienceQuestions.addLast(("Science Question " + i));
-      sportsQuestions.addLast(("Sports Question " + i));
-      rockQuestions.addLast(createRockQuestion(i));
+      popQuestions.add("Pop Question " + i);
+      scienceQuestions.add(("Science Question " + i));
+      sportsQuestions.add(("Sports Question " + i));
+      rockQuestions.add(createRockQuestion(i));
     }
   }
 
@@ -37,8 +38,6 @@ public class Game implements IGame {
   }
 
   public boolean add(String playerName) {
-
-
     players.add(playerName);
     places[howManyPlayers()] = 0;
     purses[howManyPlayers()] = 0;
@@ -76,7 +75,6 @@ public class Game implements IGame {
       }
 
     } else {
-
       places[currentPlayer] = places[currentPlayer] + roll;
       if (places[currentPlayer] > 11) places[currentPlayer] = places[currentPlayer] - 12;
 
@@ -128,18 +126,13 @@ public class Game implements IGame {
         currentPlayer++;
         if (currentPlayer == players.size()) currentPlayer = 0;
 
-//        inPenaltyBox[currentPlayer] = false;
-
         return winner;
       } else {
         currentPlayer++;
         if (currentPlayer == players.size()) currentPlayer = 0;
         return true;
       }
-
-
     } else {
-
       System.out.println("Answer was corrent!!!!");
       purses[currentPlayer]++;
       System.out.println(players.get(currentPlayer)
@@ -164,7 +157,6 @@ public class Game implements IGame {
     if (currentPlayer == players.size()) currentPlayer = 0;
     return true;
   }
-
 
   private boolean didPlayerWin() {
     return !(purses[currentPlayer] == 6);

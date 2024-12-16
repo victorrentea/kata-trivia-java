@@ -20,11 +20,11 @@ public class GameTest {
 	}
 
 	private void testSeed(int seed, boolean printExpected) {
-		String expectedOutput = extractOutput(new Random(seed), new Game());
+		String expectedOutput = extractOutput(new Random(seed), new GameOld());
 		if (printExpected) {
 			System.out.println(expectedOutput);
 		}
-		String actualOutput = extractOutput(new Random(seed), new GameBetter());
+		String actualOutput = extractOutput(new Random(seed), new Game());
 		assertEquals("Change detected for seed " + seed +
 						 ". To breakpoint through it, run this seed alone using the (ignored) test below",
 			expectedOutput, actualOutput);

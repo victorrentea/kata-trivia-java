@@ -4,7 +4,7 @@ import java.util.ArrayList;
 import java.util.LinkedList;
 
 // REFACTOR ME
-public class GameBetter implements IGame {
+public class GameOld implements IGame {
    ArrayList players = new ArrayList();
    int[] places = new int[6];
    int[] purses = new int[6];
@@ -18,7 +18,7 @@ public class GameBetter implements IGame {
    int currentPlayer = 0;
    boolean isGettingOutOfPenaltyBox;
 
-   public GameBetter() {
+   public GameOld() {
       for (int i = 0; i < 50; i++) {
          popQuestions.addLast("Pop Question " + i);
          scienceQuestions.addLast(("Science Question " + i));
