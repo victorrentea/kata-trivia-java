@@ -84,3 +84,14 @@ refactored the code isn't it? Refactoring = Deep Understanding.
 
 Hint: you are allowed to expose the player information out of the game
 
+
+### Presentation
+
+ In the `slide` folder, you will find a presentation that you can use to present your refactoring to your colleagues.
+
+ To build a new presentation pdf file, you will need to run the following command:
+
+ ```bash
+npx @marp-team/marp-cli@latest
+```
+> Be sure to have Node.js and npm installed on your machine.
