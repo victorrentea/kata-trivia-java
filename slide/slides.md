@@ -7,6 +7,15 @@
 ###### by Bogdan Mihai Nicolae
 
 ---
+## 🗂️ Agenda
+
+- The problem
+- Some Data Structures
+- Some Principles
+- Conclusion
+- Further Reading & Watching
+
+---
 
 ## 🚨 The problem 
 
@@ -72,13 +81,27 @@ Check out this discussion: [Is it possible to create a fixed length array in jav
 
 ---
 
-## 💡 Missing Types in the Codebase
-Working without proper types can lead to 🐛 runtime errors, 🤯 hard-to-read code, and 🚧 slower development cycles. Adding types ensures your code is robust and developer-friendly. 🛡️✨
+## 🔗 LinkedList in JavaScript
 
-### 🏆 Key Benefits:
-- **Improves reliability**: Catch errors before runtime. ✅
-- **Enhances developer experience**: Better autocompletion and IDE support. 🖥️✍️
-- **Simplifies maintenance**: Types act as living documentation for your code. 📜✨
+```Javascript
+class LinkedList {
+  constructor() {
+    this.head = null;
+    this.size = 0;
+  }
+
+  insert(data) {
+    const newNode = { data, next: null };
+    if (!this.head) this.head = newNode;
+    else {
+      let current = this.head;
+      while (current.next) current = current.next;
+      current.next = newNode;
+    }
+    this.size++;
+  }
+}
+```
 
 ---
 
@@ -90,10 +113,20 @@ Working without proper types can lead to 🐛 runtime errors, 🤯 hard-to-read 
 The cheat sheet for algorithmic complexity: [Big O Cheat Sheet](https://www.bigocheatsheet.com/)
 
 ---
+
+## 💡 Missing Types in the Codebase
+Working without proper types can lead to runtime errors, hard-to-read code, and slower development cycles. Adding types ensures your code is robust and developer-friendly. 🛡️
+
+### 🏆 Key Benefits:
+- **Improves reliability**: Catch errors before runtime. ✅
+- **Enhances developer experience**: Better autocompletion and IDE support. 🖥️
+- **Simplifies maintenance**: Types act as living documentation for your code. 📜
+
+---
 ![bg left:23%](../art/copy-paste-keyboard.jpg)
 
 ## 💡 The DRY Principle
-"Don't Repeat Yourself" 🛑🔄 ensures every piece of knowledge in your system has a single, definitive source.
+"Don't Repeat Yourself" ensures every piece of knowledge in your system has a single, definitive source.
 
 
 ### 🏆 Key Benefits:
@@ -107,31 +140,31 @@ The cheat sheet for algorithmic complexity: [Big O Cheat Sheet](https://www.bigo
 Every class, module, or function should have a single responsibility—focus on doing one thing well! 🎯
 
 ### 🏆 Key Benefits:
-- **Improved readability**: Clearer, more focused code. 👀✨
-- **Easier debugging and testing**: Fewer responsibilities = fewer bugs. 🐛🔧
-- **Enhanced maintainability**: Isolated changes don’t ripple through the system. 🌊⚙️
+- **Improved readability**: Clearer, more focused code. 👀
+- **Easier debugging and testing**: Fewer responsibilities = fewer bugs. 🐛
+- **Enhanced maintainability**: Isolated changes don’t ripple through the system. 🌊
 
 ---
 
 ![bg right:29%](../art/kiss.jpg)
 
 ## 💋 The KISS Principle
-"Keep It Simple, Stupid" 😎✂️ (KISS), the goal is to keep systems as simple as possible—no overcomplicating things! 🎯
+"Keep It Simple, Stupid" (KISS), the goal is to keep systems as simple as possible—no overcomplicating things! 🎯
 
 ### 🏆 Key Benefits:
-- **Easier to debug and maintain**: Less code means less chaos when things go wrong! 🛠️🔧
-- **Faster onboarding for new developers**: Simplicity = less confusion, more learning! 📚🚀
+- **Easier to debug and maintain**: Less code means less chaos when things go wrong! 🛠️
+- **Faster onboarding for new developers**: Simplicity = less confusion, more learning! 📚
 - **Reduced risk of errors**: Fewer moving parts = fewer chances for mistakes! ⚡
 
 ---
 
-📏 Flatten Functions
+## 📏 Flatten Functions
 Flattening functions means simplifying them by breaking down complex, nested structures into smaller, more manageable pieces. 🧩
 Keep each function short, clear, and focused on a single task. 🎯
 
 🏆 Key Benefits:
-- **Improved readability**: Easier for others (and future you!) to understand. 👀✨
-- **Simpler debugging**: Smaller functions are easier to test and fix. 🐞🔍
+- **Improved readability**: Easier for others (and future you!) to understand. 👀
+- **Simpler debugging**: Smaller functions are easier to test and fix. 🐞
 - **Better reusability**: Clean, standalone functions can be used elsewhere. 🔄
 
 ---
