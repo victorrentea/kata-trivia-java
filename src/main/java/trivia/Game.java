@@ -36,10 +36,10 @@ public class Game implements IGame {
    }
 
    public boolean add(String playerName) {
-      players.add(playerName);
-      places[howManyPlayers()] = 0;
+      places[howManyPlayers()] = 1;
       purses[howManyPlayers()] = 0;
       inPenaltyBox[howManyPlayers()] = false;
+      players.add(playerName);
 
       System.out.println(playerName + " was added");
       System.out.println("They are player number " + players.size());
@@ -60,7 +60,7 @@ public class Game implements IGame {
 
             System.out.println(players.get(currentPlayer) + " is getting out of the penalty box");
             places[currentPlayer] = places[currentPlayer] + roll;
-            if (places[currentPlayer] > 11) places[currentPlayer] = places[currentPlayer] - 12;
+            if (places[currentPlayer] > 12) places[currentPlayer] = places[currentPlayer] - 12;
 
             System.out.println(players.get(currentPlayer)
                                + "'s new location is "
@@ -75,7 +75,7 @@ public class Game implements IGame {
       } else {
 
          places[currentPlayer] = places[currentPlayer] + roll;
-         if (places[currentPlayer] > 11) places[currentPlayer] = places[currentPlayer] - 12;
+         if (places[currentPlayer] > 12) places[currentPlayer] = places[currentPlayer] - 12;
 
          System.out.println(players.get(currentPlayer)
                             + "'s new location is "
@@ -99,19 +99,19 @@ public class Game implements IGame {
 
 
    private String currentCategory() {
-      if (places[currentPlayer] == 0) return "Pop";
-      if (places[currentPlayer] == 4) return "Pop";
-      if (places[currentPlayer] == 8) return "Pop";
-      if (places[currentPlayer] == 1) return "Science";
-      if (places[currentPlayer] == 5) return "Science";
-      if (places[currentPlayer] == 9) return "Science";
-      if (places[currentPlayer] == 2) return "Sports";
-      if (places[currentPlayer] == 6) return "Sports";
-      if (places[currentPlayer] == 10) return "Sports";
+      if (places[currentPlayer] - 1 == 0) return "Pop";
+      if (places[currentPlayer] - 1 == 4) return "Pop";
+      if (places[currentPlayer] - 1 == 8) return "Pop";
+      if (places[currentPlayer] - 1 == 1) return "Science";
+      if (places[currentPlayer] - 1 == 5) return "Science";
+      if (places[currentPlayer] - 1 == 9) return "Science";
+      if (places[currentPlayer] - 1 == 2) return "Sports";
+      if (places[currentPlayer] - 1 == 6) return "Sports";
+      if (places[currentPlayer] - 1 == 10) return "Sports";
       return "Rock";
    }
 
-   public boolean wasCorrectlyAnswered() {
+   public boolean handleCorrectAnswer() {
       if (inPenaltyBox[currentPlayer]) {
          if (isGettingOutOfPenaltyBox) {
             System.out.println("Answer was correct!!!!");
