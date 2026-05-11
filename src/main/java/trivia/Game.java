@@ -70,8 +70,9 @@ public class Game implements IGame {
             System.out.println(players.get(currentPlayer)
                                + "'s new location is "
                                + positions[currentPlayer]);
-            System.out.println("The category is " + currentCategory());
-            askQuestion();
+            String category = currentCategory(positions[currentPlayer]);
+            System.out.println("The category is " + category);
+            askQuestion(category);
          } else {
             System.out.println(players.get(currentPlayer) + " is not getting out of the penalty box");
             isGettingOutOfPenaltyBox = false;
@@ -84,34 +85,35 @@ public class Game implements IGame {
          System.out.println(players.get(currentPlayer)
                             + "'s new location is "
                             + positions[currentPlayer]);
-         System.out.println("The category is " + currentCategory());
-         askQuestion();
+         String category = currentCategory(positions[currentPlayer]);
+         System.out.println("The category is " + category);
+         askQuestion(category);
       }
 
    }
 
-   private void askQuestion() {
-      if (currentCategory() == "Pop")
+   private void askQuestion(String category) {
+      if (category == "Pop")
          System.out.println(popQuestions.removeFirst());
-      if (currentCategory() == "Science")
+      if (category == "Science")
          System.out.println(scienceQuestions.removeFirst());
-      if (currentCategory() == "Sports")
+      if (category == "Sports")
          System.out.println(sportsQuestions.removeFirst());
-      if (currentCategory() == "Rock")
+      if (category == "Rock")
          System.out.println(rockQuestions.removeFirst());
    }
 
 
-   private String currentCategory() {
-      if (positions[currentPlayer] - 1 == 0) return "Pop";
-      if (positions[currentPlayer] - 1 == 4) return "Pop";
-      if (positions[currentPlayer] - 1 == 8) return "Pop";
-      if (positions[currentPlayer] - 1 == 1) return "Science";
-      if (positions[currentPlayer] - 1 == 5) return "Science";
-      if (positions[currentPlayer] - 1 == 9) return "Science";
-      if (positions[currentPlayer] - 1 == 2) return "Sports";
-      if (positions[currentPlayer] - 1 == 6) return "Sports";
-      if (positions[currentPlayer] - 1 == 10) return "Sports";
+   private String currentCategory(int position) {
+      if (position - 1 == 0) return "Pop";
+      if (position - 1 == 4) return "Pop";
+      if (position - 1 == 8) return "Pop";
+      if (position - 1 == 1) return "Science";
+      if (position - 1 == 5) return "Science";
+      if (position - 1 == 9) return "Science";
+      if (position - 1 == 2) return "Sports";
+      if (position - 1 == 6) return "Sports";
+      if (position - 1 == 10) return "Sports";
       return "Rock";
    }
 
