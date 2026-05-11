@@ -8,8 +8,8 @@ import java.util.List;
 public class Game implements IGame {
    private static final int MAX_QUESTIONS = 50;
    private static final int MAX_PLAYERS = 6;
-   private static final int BOARD_SIZE = 12;
-   private static final int WINNING_COINS = 6;
+   static final int BOARD_SIZE = 12;
+   static final int WINNING_COINS = 6;
 
    List<Player> players = new ArrayList<>();
 
@@ -60,7 +60,7 @@ public class Game implements IGame {
 
             System.out.println(players.get(currentPlayer) + " is getting out of the penalty box");
             
-            movePlayer(roll);
+            players.get(currentPlayer).advance(roll);
 
             System.out.println(players.get(currentPlayer)
                                + "'s new location is "
@@ -75,7 +75,7 @@ public class Game implements IGame {
 
       } else {
 
-         movePlayer(roll);
+         players.get(currentPlayer).advance(roll);
          
          System.out.println(players.get(currentPlayer)
                             + "'s new location is "
@@ -117,10 +117,10 @@ public class Game implements IGame {
          if (isGettingOutOfPenaltyBox) {
             System.out.println("Answer was correct!!!!");
             Player player = players.get(currentPlayer);
-            player.coins++;
+            player.addCoin();
             System.out.println(player + " now has " + player.coins + " Gold Coins.");
 
-            boolean winner = playerHasNotWon();
+            boolean winner = !player.hasWon();
             nextPlayer();
 
             return winner;
@@ -134,10 +134,10 @@ public class Game implements IGame {
 
          System.out.println("Answer was corrent!!!!");
          Player player = players.get(currentPlayer);
-            player.coins++;
+            player.addCoin();
             System.out.println(player + " now has " + player.coins + " Gold Coins.");
 
-         boolean winner = playerHasNotWon();
+         boolean winner = !player.hasWon();
          nextPlayer();
 
          return winner;
@@ -147,26 +147,16 @@ public class Game implements IGame {
    public boolean wrongAnswer() {
       System.out.println("Question was incorrectly answered");
       System.out.println(players.get(currentPlayer) + " was sent to the penalty box");
-      players.get(currentPlayer).inPenaltyBox = true;
+      players.get(currentPlayer).sendToPenaltyBox();
 
       nextPlayer();
       return true;
    }
 
 
-   private boolean playerHasNotWon() {
-      return !(players.get(currentPlayer).coins == WINNING_COINS);
-   }
-
    private void nextPlayer() {
       currentPlayer++;
       if (currentPlayer == players.size()) currentPlayer = 0;
-   }
-
-   private void movePlayer(int roll) {
-      Player player = players.get(currentPlayer);
-      player.position = player.position + roll;
-      if (player.position > BOARD_SIZE) player.position = player.position - BOARD_SIZE;
    }
 }
 
@@ -177,12 +167,29 @@ class Player {
     int coins = 0;
     boolean inPenaltyBox = false;
 
-    Player(String name) {
-        this.name = name;
+   Player(String name) {
+      this.name = name;
+   }
+
+   public void advance(int roll) {
+      position = position + roll;
+      if (position > Game.BOARD_SIZE) position = position - Game.BOARD_SIZE;
     }
 
-    @Override
-    public String toString() {
-        return name;
-    }
+   public void addCoin() {
+      coins++;
+   }
+
+   public void sendToPenaltyBox() {
+      inPenaltyBox = true;
+   }
+
+   public boolean hasWon() {
+      return coins == Game.WINNING_COINS;
+   }
+
+   @Override
+   public String toString() {
+      return name;
+   }
 }
