@@ -12,7 +12,6 @@ public class Game implements IGame {
    private static final int WINNING_COINS = 6;
 
    List<Player> players = new ArrayList<>();
-   int[] positions = new int[MAX_PLAYERS];
    int[] coins = new int[MAX_PLAYERS];
    boolean[] currentPlayerInPenaltyBox = new boolean[MAX_PLAYERS];
 
@@ -42,7 +41,6 @@ public class Game implements IGame {
    }
 
    public boolean add(String playerName) {
-      positions[howManyPlayers()] = 1;
       coins[howManyPlayers()] = 0;
       currentPlayerInPenaltyBox[howManyPlayers()] = false;
       players.add(new Player(playerName));
@@ -70,8 +68,8 @@ public class Game implements IGame {
 
             System.out.println(players.get(currentPlayer)
                                + "'s new location is "
-                               + positions[currentPlayer]);
-            String category = currentCategory(positions[currentPlayer]);
+                               + players.get(currentPlayer).position);
+            String category = currentCategory(players.get(currentPlayer).position);
             System.out.println("The category is " + category);
             askQuestion(category);
          } else {
@@ -85,8 +83,8 @@ public class Game implements IGame {
          
          System.out.println(players.get(currentPlayer)
                             + "'s new location is "
-                            + positions[currentPlayer]);
-         String category = currentCategory(positions[currentPlayer]);
+                            + players.get(currentPlayer).position);
+         String category = currentCategory(players.get(currentPlayer).position);
          System.out.println("The category is " + category);
          askQuestion(category);
       }
@@ -174,14 +172,16 @@ public class Game implements IGame {
    }
 
    private void movePlayer(int roll) {
-      positions[currentPlayer] = positions[currentPlayer] + roll;
-      if (positions[currentPlayer] > BOARD_SIZE) positions[currentPlayer] = positions[currentPlayer] - BOARD_SIZE;
+      Player player = players.get(currentPlayer);
+      player.position = player.position + roll;
+      if (player.position > BOARD_SIZE) player.position = player.position - BOARD_SIZE;
    }
 }
 
 
 class Player {
     final String name;
+    int position = 1;
 
     Player(String name) {
         this.name = name;
