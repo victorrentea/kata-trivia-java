@@ -26,6 +26,18 @@ public class Game implements IGame {
    }
 
    public boolean add(String playerName) {
+      for (Player p : players) {
+         if (p.name.equals(playerName)) {
+            System.out.println("Player " + playerName + " already exists. Cannot add.");
+            return false; // Rechazamos la adición
+         }
+      }
+
+      if (players.size() >= MAX_PLAYERS) {
+         System.out.println("Game is full. Cannot add " + playerName);
+         return false;
+      }
+      
       players.add(new Player(playerName));
 
       System.out.println(playerName + " was added");
