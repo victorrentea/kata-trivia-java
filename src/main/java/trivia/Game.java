@@ -7,6 +7,7 @@ import java.util.LinkedList;
 public class Game implements IGame {
    private static final int MAX_QUESTIONS = 50;
    private static final int MAX_PLAYERS = 6;
+   private static final int BOARD_SIZE = 12;
 
    ArrayList players = new ArrayList();
    int[] positions = new int[MAX_PLAYERS];
@@ -63,7 +64,7 @@ public class Game implements IGame {
 
             System.out.println(players.get(currentPlayer) + " is getting out of the penalty box");
             positions[currentPlayer] = positions[currentPlayer] + roll;
-            if (positions[currentPlayer] > 12) positions[currentPlayer] = positions[currentPlayer] - 12;
+            if (positions[currentPlayer] > BOARD_SIZE) positions[currentPlayer] = positions[currentPlayer] - BOARD_SIZE;
 
             System.out.println(players.get(currentPlayer)
                                + "'s new location is "
@@ -78,7 +79,7 @@ public class Game implements IGame {
       } else {
 
          positions[currentPlayer] = positions[currentPlayer] + roll;
-         if (positions[currentPlayer] > 12) positions[currentPlayer] = positions[currentPlayer] - 12;
+         if (positions[currentPlayer] > BOARD_SIZE) positions[currentPlayer] = positions[currentPlayer] - BOARD_SIZE;
 
          System.out.println(players.get(currentPlayer)
                             + "'s new location is "
