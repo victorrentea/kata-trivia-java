@@ -38,40 +38,35 @@ public class Game implements IGame {
    }
 
    public void roll(int roll) {
-      System.out.println(players.get(currentPlayer) + " is the current player");
+      Player player = players.get(currentPlayer);
+      System.out.println(player + " is the current player");
       System.out.println("They have rolled a " + roll);
 
-      if (players.get(currentPlayer).inPenaltyBox) {
-         if (roll % 2 != 0) {
-            isGettingOutOfPenaltyBox = true;
-
-            System.out.println(players.get(currentPlayer) + " is getting out of the penalty box");
-            
-            players.get(currentPlayer).advance(roll);
-
-            System.out.println(players.get(currentPlayer)
-                               + "'s new location is "
-                               + players.get(currentPlayer).position);
-            String category = currentCategory(players.get(currentPlayer).position);
-            System.out.println("The category is " + category);
-            askQuestion(category);
-         } else {
-            System.out.println(players.get(currentPlayer) + " is not getting out of the penalty box");
-            isGettingOutOfPenaltyBox = false;
-         }
-
+      if (player.inPenaltyBox) {
+         handlePenaltyBoxTurn(player, roll);
       } else {
-
-         players.get(currentPlayer).advance(roll);
-         
-         System.out.println(players.get(currentPlayer)
-                            + "'s new location is "
-                            + players.get(currentPlayer).position);
-         String category = currentCategory(players.get(currentPlayer).position);
-         System.out.println("The category is " + category);
-         askQuestion(category);
+         handleNormalTurn(player, roll);
       }
+   }
 
+   private void handleNormalTurn(Player player, int roll) {
+      player.advance(roll);
+      System.out.println(player + "'s new location is " + player.position);
+      
+      String category = currentCategory(player.position);
+      System.out.println("The category is " + category);
+      askQuestion(category);
+   }
+
+   private void handlePenaltyBoxTurn(Player player, int roll) {
+      if (roll % 2 != 0) {
+         isGettingOutOfPenaltyBox = true;
+         System.out.println(player + " is getting out of the penalty box");
+         handleNormalTurn(player, roll);
+      } else {
+         System.out.println(player + " is not getting out of the penalty box");
+         isGettingOutOfPenaltyBox = false;
+      }
    }
 
    private void askQuestion(String category) {
