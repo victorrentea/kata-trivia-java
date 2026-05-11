@@ -5,10 +5,13 @@ import java.util.LinkedList;
 
 // REFACTOR ME
 public class Game implements IGame {
+   private static final int MAX_QUESTIONS = 50;
+   private static final int MAX_PLAYERS = 6;
+
    ArrayList players = new ArrayList();
-   int[] positions = new int[6];
-   int[] coins = new int[6];
-   boolean[] inPenaltyBox = new boolean[6];
+   int[] positions = new int[MAX_PLAYERS];
+   int[] coins = new int[MAX_PLAYERS];
+   boolean[] inPenaltyBox = new boolean[MAX_PLAYERS];
 
    LinkedList popQuestions = new LinkedList();
    LinkedList scienceQuestions = new LinkedList();
@@ -17,8 +20,6 @@ public class Game implements IGame {
 
    int currentPlayer = 0;
    boolean isGettingOutOfPenaltyBox;
-
-   private static final int MAX_QUESTIONS = 50;
 
    public Game() {
       for (int i = 0; i < MAX_QUESTIONS; i++) {
