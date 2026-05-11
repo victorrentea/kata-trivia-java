@@ -31,7 +31,7 @@ public class Game implements IGame {
       return "Rock Question " + index;
    }
 
-   public boolean isPlayable() {
+   public boolean hasEnoughPlayers() {
       return (howManyPlayers() >= 2);
    }
 
