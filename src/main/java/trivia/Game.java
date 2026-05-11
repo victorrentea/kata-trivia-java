@@ -127,13 +127,11 @@ public class Game implements IGame {
                                + " Gold Coins.");
 
             boolean winner = playerHasNotWon();
-            currentPlayer++;
-            if (currentPlayer == players.size()) currentPlayer = 0;
+            nextPlayer();
 
             return winner;
          } else {
-            currentPlayer++;
-            if (currentPlayer == players.size()) currentPlayer = 0;
+            nextPlayer();
             return true;
          }
 
@@ -148,8 +146,7 @@ public class Game implements IGame {
                             + " Gold Coins.");
 
          boolean winner = playerHasNotWon();
-         currentPlayer++;
-         if (currentPlayer == players.size()) currentPlayer = 0;
+         nextPlayer();
 
          return winner;
       }
@@ -160,13 +157,17 @@ public class Game implements IGame {
       System.out.println(players.get(currentPlayer) + " was sent to the penalty box");
       currentPlayerInPenaltyBox[currentPlayer] = true;
 
-      currentPlayer++;
-      if (currentPlayer == players.size()) currentPlayer = 0;
+      nextPlayer();
       return true;
    }
 
 
    private boolean playerHasNotWon() {
       return !(coins[currentPlayer] == WINNING_COINS);
+   }
+
+   private void nextPlayer() {
+      currentPlayer++;
+      if (currentPlayer == players.size()) currentPlayer = 0;
    }
 }
