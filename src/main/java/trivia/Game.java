@@ -3,36 +3,23 @@ package trivia;
 import java.util.ArrayList;
 import java.util.LinkedList;
 import java.util.List;
+import java.util.Map;
+import java.util.Queue;
+import java.util.LinkedHashMap;
 
 // REFACTOR ME
 public class Game implements IGame {
-   private static final int MAX_QUESTIONS = 50;
+   static final int MAX_QUESTIONS = 50;
    private static final int MAX_PLAYERS = 6;
    static final int BOARD_SIZE = 12;
    static final int WINNING_COINS = 6;
 
    List<Player> players = new ArrayList<>();
 
-   LinkedList popQuestions = new LinkedList();
-   LinkedList scienceQuestions = new LinkedList();
-   LinkedList sportsQuestions = new LinkedList();
-   LinkedList rockQuestions = new LinkedList();
+   QuestionDeck deck = new QuestionDeck();
 
    int currentPlayer = 0;
    boolean isGettingOutOfPenaltyBox;
-
-   public Game() {
-      for (int i = 0; i < MAX_QUESTIONS; i++) {
-         popQuestions.addLast("Pop Question " + i);
-         scienceQuestions.addLast(("Science Question " + i));
-         sportsQuestions.addLast(("Sports Question " + i));
-         rockQuestions.addLast(createRockQuestion(i));
-      }
-   }
-
-   public String createRockQuestion(int index) {
-      return "Rock Question " + index;
-   }
 
    public boolean hasEnoughPlayers() {
       return (howManyPlayers() >= 2);
@@ -88,14 +75,7 @@ public class Game implements IGame {
    }
 
    private void askQuestion(String category) {
-      if (category == "Pop")
-         System.out.println(popQuestions.removeFirst());
-      if (category == "Science")
-         System.out.println(scienceQuestions.removeFirst());
-      if (category == "Sports")
-         System.out.println(sportsQuestions.removeFirst());
-      if (category == "Rock")
-         System.out.println(rockQuestions.removeFirst());
+      System.out.println(deck.nextQuestion(category));
    }
 
 
@@ -192,4 +172,33 @@ class Player {
    public String toString() {
       return name;
    }
+}
+
+
+class QuestionDeck {
+    private final Map<String, Queue<String>> questionsByCategory = new LinkedHashMap<>();
+
+    QuestionDeck() {
+        // Inicializar las colas vacías en el mapa
+        questionsByCategory.put("Pop", new LinkedList<>());
+        questionsByCategory.put("Science", new LinkedList<>());
+        questionsByCategory.put("Sports", new LinkedList<>());
+        questionsByCategory.put("Rock", new LinkedList<>());
+
+        // Poblar las preguntas
+        for (int i = 0; i < Game.MAX_QUESTIONS; i++) {
+            questionsByCategory.get("Pop").add("Pop Question " + i);
+            questionsByCategory.get("Science").add("Science Question " + i);
+            questionsByCategory.get("Sports").add("Sports Question " + i);
+            questionsByCategory.get("Rock").add(createRockQuestion(i));
+        }
+    }
+
+    private String createRockQuestion(int index) {
+        return "Rock Question " + index;
+    }
+
+    public String nextQuestion(String category) {
+        return questionsByCategory.get(category).poll();
+    }
 }
