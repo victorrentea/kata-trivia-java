@@ -11,7 +11,7 @@ public class Game implements IGame {
    ArrayList players = new ArrayList();
    int[] positions = new int[MAX_PLAYERS];
    int[] coins = new int[MAX_PLAYERS];
-   boolean[] inPenaltyBox = new boolean[MAX_PLAYERS];
+   boolean[] currentPlayerInPenaltyBox = new boolean[MAX_PLAYERS];
 
    LinkedList popQuestions = new LinkedList();
    LinkedList scienceQuestions = new LinkedList();
@@ -41,7 +41,7 @@ public class Game implements IGame {
    public boolean add(String playerName) {
       positions[howManyPlayers()] = 1;
       coins[howManyPlayers()] = 0;
-      inPenaltyBox[howManyPlayers()] = false;
+      currentPlayerInPenaltyBox[howManyPlayers()] = false;
       players.add(playerName);
 
       System.out.println(playerName + " was added");
@@ -57,7 +57,7 @@ public class Game implements IGame {
       System.out.println(players.get(currentPlayer) + " is the current player");
       System.out.println("They have rolled a " + roll);
 
-      if (inPenaltyBox[currentPlayer]) {
+      if (currentPlayerInPenaltyBox[currentPlayer]) {
          if (roll % 2 != 0) {
             isGettingOutOfPenaltyBox = true;
 
@@ -115,7 +115,7 @@ public class Game implements IGame {
    }
 
    public boolean handleCorrectAnswer() {
-      if (inPenaltyBox[currentPlayer]) {
+      if (currentPlayerInPenaltyBox[currentPlayer]) {
          if (isGettingOutOfPenaltyBox) {
             System.out.println("Answer was correct!!!!");
             coins[currentPlayer]++;
@@ -156,7 +156,7 @@ public class Game implements IGame {
    public boolean wrongAnswer() {
       System.out.println("Question was incorrectly answered");
       System.out.println(players.get(currentPlayer) + " was sent to the penalty box");
-      inPenaltyBox[currentPlayer] = true;
+      currentPlayerInPenaltyBox[currentPlayer] = true;
 
       currentPlayer++;
       if (currentPlayer == players.size()) currentPlayer = 0;
