@@ -8,6 +8,7 @@ public class Game implements IGame {
    private static final int MAX_QUESTIONS = 50;
    private static final int MAX_PLAYERS = 6;
    private static final int BOARD_SIZE = 12;
+   private static final int WINNING_COINS = 6;
 
    ArrayList players = new ArrayList();
    int[] positions = new int[MAX_PLAYERS];
@@ -166,6 +167,6 @@ public class Game implements IGame {
 
 
    private boolean playerHasNotWon() {
-      return !(coins[currentPlayer] == 6);
+      return !(coins[currentPlayer] == WINNING_COINS);
    }
 }
