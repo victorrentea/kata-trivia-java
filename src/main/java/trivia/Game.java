@@ -64,8 +64,8 @@ public class Game implements IGame {
             isGettingOutOfPenaltyBox = true;
 
             System.out.println(players.get(currentPlayer) + " is getting out of the penalty box");
-            positions[currentPlayer] = positions[currentPlayer] + roll;
-            if (positions[currentPlayer] > BOARD_SIZE) positions[currentPlayer] = positions[currentPlayer] - BOARD_SIZE;
+            
+            movePlayer(roll);
 
             System.out.println(players.get(currentPlayer)
                                + "'s new location is "
@@ -79,9 +79,8 @@ public class Game implements IGame {
 
       } else {
 
-         positions[currentPlayer] = positions[currentPlayer] + roll;
-         if (positions[currentPlayer] > BOARD_SIZE) positions[currentPlayer] = positions[currentPlayer] - BOARD_SIZE;
-
+         movePlayer(roll);
+         
          System.out.println(players.get(currentPlayer)
                             + "'s new location is "
                             + positions[currentPlayer]);
@@ -169,5 +168,10 @@ public class Game implements IGame {
    private void nextPlayer() {
       currentPlayer++;
       if (currentPlayer == players.size()) currentPlayer = 0;
+   }
+
+   private void movePlayer(int roll) {
+      positions[currentPlayer] = positions[currentPlayer] + roll;
+      if (positions[currentPlayer] > BOARD_SIZE) positions[currentPlayer] = positions[currentPlayer] - BOARD_SIZE;
    }
 }
