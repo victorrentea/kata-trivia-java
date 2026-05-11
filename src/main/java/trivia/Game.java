@@ -12,7 +12,6 @@ public class Game implements IGame {
    private static final int WINNING_COINS = 6;
 
    List<Player> players = new ArrayList<>();
-   int[] coins = new int[MAX_PLAYERS];
    boolean[] currentPlayerInPenaltyBox = new boolean[MAX_PLAYERS];
 
    LinkedList popQuestions = new LinkedList();
@@ -41,7 +40,6 @@ public class Game implements IGame {
    }
 
    public boolean add(String playerName) {
-      coins[howManyPlayers()] = 0;
       currentPlayerInPenaltyBox[howManyPlayers()] = false;
       players.add(new Player(playerName));
 
@@ -120,11 +118,9 @@ public class Game implements IGame {
       if (currentPlayerInPenaltyBox[currentPlayer]) {
          if (isGettingOutOfPenaltyBox) {
             System.out.println("Answer was correct!!!!");
-            coins[currentPlayer]++;
-            System.out.println(players.get(currentPlayer)
-                               + " now has "
-                               + coins[currentPlayer]
-                               + " Gold Coins.");
+            Player player = players.get(currentPlayer);
+            player.coins++;
+            System.out.println(player + " now has " + player.coins + " Gold Coins.");
 
             boolean winner = playerHasNotWon();
             nextPlayer();
@@ -139,11 +135,9 @@ public class Game implements IGame {
       } else {
 
          System.out.println("Answer was corrent!!!!");
-         coins[currentPlayer]++;
-         System.out.println(players.get(currentPlayer)
-                            + " now has "
-                            + coins[currentPlayer]
-                            + " Gold Coins.");
+         Player player = players.get(currentPlayer);
+            player.coins++;
+            System.out.println(player + " now has " + player.coins + " Gold Coins.");
 
          boolean winner = playerHasNotWon();
          nextPlayer();
@@ -163,7 +157,7 @@ public class Game implements IGame {
 
 
    private boolean playerHasNotWon() {
-      return !(coins[currentPlayer] == WINNING_COINS);
+      return !(players.get(currentPlayer).coins == WINNING_COINS);
    }
 
    private void nextPlayer() {
@@ -182,6 +176,7 @@ public class Game implements IGame {
 class Player {
     final String name;
     int position = 1;
+    int coins = 0;
 
     Player(String name) {
         this.name = name;
