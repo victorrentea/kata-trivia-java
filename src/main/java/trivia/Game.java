@@ -95,6 +95,8 @@ public class Game implements IGame {
             player.addCoin();
             System.out.println(player + " now has " + player.coins + " Gold Coins.");
 
+            player.inPenaltyBox = false;
+
             boolean winner = !player.hasWon();
             nextPlayer();
 
