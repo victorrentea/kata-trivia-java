@@ -7,7 +7,7 @@ import java.util.LinkedList;
 public class Game implements IGame {
    ArrayList players = new ArrayList();
    int[] positions = new int[6];
-   int[] purses = new int[6];
+   int[] coins = new int[6];
    boolean[] inPenaltyBox = new boolean[6];
 
    LinkedList popQuestions = new LinkedList();
@@ -37,7 +37,7 @@ public class Game implements IGame {
 
    public boolean add(String playerName) {
       positions[howManyPlayers()] = 1;
-      purses[howManyPlayers()] = 0;
+      coins[howManyPlayers()] = 0;
       inPenaltyBox[howManyPlayers()] = false;
       players.add(playerName);
 
@@ -115,10 +115,10 @@ public class Game implements IGame {
       if (inPenaltyBox[currentPlayer]) {
          if (isGettingOutOfPenaltyBox) {
             System.out.println("Answer was correct!!!!");
-            purses[currentPlayer]++;
+            coins[currentPlayer]++;
             System.out.println(players.get(currentPlayer)
                                + " now has "
-                               + purses[currentPlayer]
+                               + coins[currentPlayer]
                                + " Gold Coins.");
 
             boolean winner = playerHasNotWon();
@@ -136,10 +136,10 @@ public class Game implements IGame {
       } else {
 
          System.out.println("Answer was corrent!!!!");
-         purses[currentPlayer]++;
+         coins[currentPlayer]++;
          System.out.println(players.get(currentPlayer)
                             + " now has "
-                            + purses[currentPlayer]
+                            + coins[currentPlayer]
                             + " Gold Coins.");
 
          boolean winner = playerHasNotWon();
@@ -162,6 +162,6 @@ public class Game implements IGame {
 
 
    private boolean playerHasNotWon() {
-      return !(purses[currentPlayer] == 6);
+      return !(coins[currentPlayer] == 6);
    }
 }
