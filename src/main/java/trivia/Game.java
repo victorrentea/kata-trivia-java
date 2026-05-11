@@ -2,6 +2,7 @@ package trivia;
 
 import java.util.ArrayList;
 import java.util.LinkedList;
+import java.util.List;
 
 // REFACTOR ME
 public class Game implements IGame {
@@ -10,7 +11,7 @@ public class Game implements IGame {
    private static final int BOARD_SIZE = 12;
    private static final int WINNING_COINS = 6;
 
-   ArrayList players = new ArrayList();
+   List<Player> players = new ArrayList<>();
    int[] positions = new int[MAX_PLAYERS];
    int[] coins = new int[MAX_PLAYERS];
    boolean[] currentPlayerInPenaltyBox = new boolean[MAX_PLAYERS];
@@ -44,7 +45,7 @@ public class Game implements IGame {
       positions[howManyPlayers()] = 1;
       coins[howManyPlayers()] = 0;
       currentPlayerInPenaltyBox[howManyPlayers()] = false;
-      players.add(playerName);
+      players.add(new Player(playerName));
 
       System.out.println(playerName + " was added");
       System.out.println("They are player number " + players.size());
@@ -176,4 +177,18 @@ public class Game implements IGame {
       positions[currentPlayer] = positions[currentPlayer] + roll;
       if (positions[currentPlayer] > BOARD_SIZE) positions[currentPlayer] = positions[currentPlayer] - BOARD_SIZE;
    }
+}
+
+
+class Player {
+    final String name;
+
+    Player(String name) {
+        this.name = name;
+    }
+
+    @Override
+    public String toString() {
+        return name;
+    }
 }
